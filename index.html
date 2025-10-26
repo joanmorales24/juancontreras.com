@@ -557,6 +557,62 @@
 </div>
 </div>
 </section>
+<!-- Marcas carousel: 1 per view on mobile, 5 per view on desktop -->
+<section class="py-12 sm:py-16" id="marcas">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 text-center">Marcas con las que trabajamos</h2>
+        <div class="swiper marcas-swiper rounded-xl">
+            <div class="swiper-wrapper items-center py-6">
+                <!-- Slides: one image per slide -->
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/1%20(2).webp" alt="marca-1" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/2%20(1).webp" alt="marca-2" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/3%20(1).webp" alt="marca-3" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/4%20(1).webp" alt="marca-4" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/5.webp" alt="marca-5" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/6.webp" alt="marca-6" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/7.webp" alt="marca-7" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/8.webp" alt="marca-8" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/9.webp" alt="marca-9" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/10.webp" alt="marca-10" class="max-h-20 object-contain"/></div>
+                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/11.webp" alt="marca-11" class="max-h-20 object-contain"/></div>
+            </div>
+            <button class="swiper-button-prev absolute left-3 top-1/2 -translate-y-1/2 z-30 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white text-black focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Anterior marcas">
+                <span class="material-symbols-outlined text-2xl">chevron_left</span>
+            </button>
+            <button class="swiper-button-next absolute right-3 top-1/2 -translate-y-1/2 z-30 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white text-black focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Siguiente marcas">
+                <span class="material-symbols-outlined text-2xl">chevron_right</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* marcas swiper images */
+    .marcas-swiper .swiper-slide img { max-height: 80px; width: auto; }
+</style>
+
+<!-- init marcas swiper -->
+<script>
+    (function(){
+        try {
+            new Swiper('.marcas-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 16,
+                loop: true,
+                navigation: { nextEl: '.marcas-swiper .swiper-button-next', prevEl: '.marcas-swiper .swiper-button-prev' },
+                pagination: { el: '.marcas-swiper .swiper-pagination', clickable: true },
+                breakpoints: {
+                    768: { slidesPerView: 3 },
+                    1024: { slidesPerView: 5 }
+                },
+                watchOverflow: true,
+            });
+        } catch (e) { console.error('marcas swiper init error', e); }
+    })();
+</script>
+
+<!-- end marcas carousel -->
+
 <section class="py-20 sm:py-32" id="team">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
