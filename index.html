@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JEC - Automotive Sales Consulting</title>
+<link rel="stylesheet" href="styles/main.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#049b9b",
+                        "accent": "#FFA500",
+                        "background-light": "#F8F9FA",
+                        "background-dark": "#121212",
+                        "text-primary": "#212529",
+                        "text-secondary": "#6C757D"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Lora", "serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .text-mask {
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Polaroid-style photo frame for Swiper slides */
+        .polaroid {
+            background: rgba(255,255,255,1);
+            /* increase padding so the photo has breathing room and won't be visually cropped */
+            padding: 20px 18px 26px;
+            border-radius: 10px;
+            /* subtle shadow on the photo frame */
+            box-shadow: 0 10px 22px rgba(10,20,30,0.06);
+            display: inline-block;
+            max-width: 760px;
+            width: min(92vw, 760px);
+            transform: rotate(var(--rot, 0deg));
+            /* ensure polaroid never exceeds viewport height */
+            max-height: calc(92vh);
+            overflow: visible;
+        }
+        .polaroid img {
+            display: block;
+            /* keep full image visible: allow width to shrink and limit height so image never overflows */
+            width: auto;
+            max-width: 100%;
+            max-height: calc(80vh - 80px);
+            margin: 0 auto;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+        /* caption inside the polaroid: small, elegant and professional */
+        .polaroid .caption {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: rgba(33,37,41,0.8); /* subtle dark text */
+            font-family: inherit;
+            text-align: left;
+            line-height: 1.1;
+        }
+        /* Swiper / Polaroid adjustments: show one slide at a time and keep image visible */
+        /* The slide itself is full-width so there are no partial peeks of neighboring slides. */
+        .about-swiper {
+            overflow: hidden; /* hide neighboring slides so only one is visible at a time */
+            position: relative;
+        }
+        .about-swiper .swiper-wrapper {
+            align-items: center;
+            /* ensure wrapper centers slides vertically */
+        }
+        .about-swiper .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 0 0 100% !important; /* force one slide per view */
+            width: 100% !important;
+            box-sizing: border-box;
+            padding: 8px 0; /* small vertical breathing room */
+            overflow: visible; /* inner polaroid can overflow slightly but container will hide neighbours */
+        }
+        /* ensure polaroid is centered inside the slide and doesn't shrink */
+        .about-swiper .polaroid { margin: 0 auto; display: block; }
+        /* tiny negative margin to nudge metric nav buttons closer/finer control */
+        #metrics-up, #metrics-down { margin: -5px; }
+        /* Force larger icon size in the Services section in case utility classes are overridden */
+        #services .material-symbols-outlined {
+            font-size: 3.75rem !important; /* equivalent to text-6xl */
+            line-height: 1 !important;
+        }
+        /* Ensure mobile top spacing for metrics title if utility classes aren't applied */
+        @media (max-width: 767px) {
+            #metrics .metrics-title { margin-top: 1.5rem; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-body text-text-primary dark:text-background-light">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-20">
+<div class="flex items-center gap-4 text-text-primary dark:text-background-light">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_319)">
+<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"></path>
+</g>
+<defs>
+<clipPath id="clip0_6_319">
+<rect fill="white" height="48" width="48"></rect>
+</clipPath>
+</defs>
+</svg>
+</div>
+<h2 class="font-display text-2xl font-bold tracking-tighter">JEC</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#about">About</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#services">Services</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#team">Our Team</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#success">Success Stories</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#testimonials">Testimonials</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#contact">Contact</a>
+</nav>
+<div class="hidden md:block">
+<a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-primary text-white font-display text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors" href="#contact">
+<span class="truncate">Schedule a Consultation</span>
+</a>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1">
+<section class="relative h-screen flex items-center justify-start bg-background-light dark:bg-background-dark overflow-hidden">
+<div class="absolute inset-0 z-0">
+    <picture>
+        <!-- Desktop / tablet -->
+        <source srcset="/images/bg-hero-desktop.webp" media="(min-width: 768px)" />
+        <!-- Mobile -->
+        <source srcset="/images/bg-hero-mobile.webp" media="(max-width: 767px)" />
+        <!-- Fallback -->
+        <img class="w-full h-full object-cover" src="/images/bg-hero-desktop.webp" alt="Fondo del hero con Juan Eduardo Contreras, consultor en retail automotriz" loading="eager" />
+    </picture>
+</div>
+<div class="relative z-10 w-full px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-left w-full md:w-1/2 lg:w-1/2">
+            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">Impulsamos el desarrollo de las capacidades comerciales de tu concesionario</h1>
+            <p class="font-body text-lg md:text-xl mt-6 text-white/90 max-w-4xl">Más de 20 años acelerando la adaptación del ecosistema de concesionarios a la nueva realidad del retail automotriz en LATAM</p>
+        </div>
+    </div>
+</div>
+</section>
+<section class="py-0 sm:py-0 relative overflow-visible" id="metrics">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0">
+            <div class="absolute left-1/2 -translate-x-1/2 -top-40 h-[48rem] w-[48rem] bg-accent/30 blur-3xl rounded-full opacity-90"></div>
+            <div class="absolute -bottom-40 -left-20 h-[32rem] w-[32rem] bg-primary/20 blur-3xl rounded-full opacity-90"></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row gap-10 items-center">
+                <div class="mb-10 md:mb-0 w-full md:w-[35%] flex-shrink-0">
+                    <h2 class="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary dark:text-background-light metrics-title mt-6 md:mt-0 mb-3">¿Qué podemos hacer por tu concesionario?</h2>
+                    <h3 class="font-display text-xl text-primary">Métricas</h3>
+                </div>
+                <div class="w-full md:w-[65%]">
+                    <div class="relative w-full max-w-xl mx-auto" id="metrics-slider-container">
+                        <div id="metrics-slider" class="relative h-[520px] md:h-[920px] flex items-center justify-center">
+                            <button id="metrics-up" type="button" aria-label="Anterior" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                                <span class="material-symbols-outlined text-2xl">expand_less</span>
+                            </button>
+                            <div id="metrics-vertical-slides" class="relative w-full h-full flex flex-col items-center justify-center overflow-visible">
+                            </div>
+                            <button id="metrics-down" type="button" aria-label="Siguiente" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                                <span class="material-symbols-outlined text-2xl">expand_more</span>
+                            </button>
+                        </div>
+                        <template id="metrics-card-templates">
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="32" data-prefix="+" data-suffix="%">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Ventas</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Optimizamos el viaje de compra con diagnóstico y seguimiento, logrando hasta un 32% más en ventas.</p>
+                            </article>
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="87" data-prefix="+" data-suffix="%">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Conversión</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Aceleramos decisiones de compra con un modelo omnicanal y atención digital integrada al CRM, alcanzando hasta 87% más conversión.</p>
+                            </article>
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="40" data-prefix="+" data-suffix="%">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Renovaciones</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Aumentamos la tasa de renovación hasta un 40% aplicando una metodología de renovaciones programadas.</p>
+                            </article>
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="11" data-prefix="+" data-suffix="%">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Nuevos</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Impulsamos ventas de unidades nuevas (+11%) implementando nuestro modelo de negocio de usados.</p>
+                            </article>
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="37" data-prefix="+" data-suffix="%">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Retomas</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Impulsamos ventas de retomas (+37%) implementando nuestro modelo de negocio de usados.</p>
+                            </article>
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="87" data-prefix="+" data-suffix="%">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Satisfacción</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Elevamos la satisfacción del cliente hasta un 87% con nuestra metodología de investigación de mercado sobre oportunidades no cerradas.</p>
+                            </article>
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="20" data-prefix="+" data-suffix="pp">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Conversión</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Mejoramos la eficiencia comercial logrando +20 puntos en conversión gracias a la atención centrada en el cliente y seguimiento diario de oportunidades.</p>
+                            </article>
+                            <article class="group bg-background-light/80 dark:bg-background-dark/80 border border-text-secondary/20 rounded-2xl p-8 shadow-lg transition-all duration-300 opacity-0" data-animate>
+                                <div class="mb-4 flex flex-col items-start gap-1">
+                                    <span class="text-primary font-extrabold font-display text-5xl md:text-6xl leading-none" data-counter="15" data-prefix="+" data-suffix="pp">0</span>
+                                    <span class="font-display text-xl md:text-2xl font-bold text-text-primary dark:text-background-light mt-2">Cierre</span>
+                                </div>
+                                <p class="font-body text-text-primary/90 dark:text-background-light/90">Mejoramos la eficiencia comercial logrando +15 puntos en cierre gracias a la atención centrada en el cliente y seguimiento diario de oportunidades.</p>
+                            </article>
+                        </template>
+                    </div>
+    <script>
+        // Carrusel vertical tipo reels para métricas
+        (function() {
+            const template = document.getElementById('metrics-card-templates');
+            const cards = Array.from(template.content.children).map(card => card.outerHTML);
+            const slides = document.getElementById('metrics-vertical-slides');
+            let current = 0;
+
+            function renderVertical(idx) {
+                // Clear slides
+                slides.innerHTML = '';
+                // central card uses auto height (adapts to content) with a sensible max-height
+                // larger central card sizes (desktop + responsive)
+                const wrapperSize = { w: 'w-[420px]', h: 'h-auto max-h-[820px]', mdw: 'md:w-[480px]', mdh: 'md:h-auto' };
+                // blurred adjacent cards slightly smaller than active
+                const blurredSize = { w: 'w-[360px]', h: 'h-auto max-h-[720px]', mdw: 'md:w-[420px]', mdh: 'md:h-auto' };
+
+                // Helper to build size classes string
+                function sizeClass(s) { return `${s.w} ${s.h} ${s.mdw} ${s.mdh}`; }
+
+                for (let i = 0; i < cards.length; i++) {
+                    const isPrev = i === (idx - 1 + cards.length) % cards.length;
+                    const isNext = i === (idx + 1) % cards.length;
+                    const isActive = i === idx;
+
+                    const outer = document.createElement('div');
+                    outer.className = 'absolute left-1/2 -translate-x-1/2 top-1/2 flex items-center justify-center transition-all duration-700';
+                    // calculate offset
+                    let offset = 0;
+                    // reduced vertical offset so adjacent blurred cards sit much closer to the active card
+                    if (isPrev) offset = -120;
+                    if (isNext) offset = 120;
+                    outer.style.transform = `translate(-50%,-50%) translateY(${offset}px)`;
+
+                    // inner sized container
+                    const inner = document.createElement('div');
+                    inner.className = `${sizeClass(wrapperSize)} rounded-2xl shadow-lg overflow-hidden bg-transparent flex items-stretch justify-stretch`;
+
+                    // Clone the template node and normalize classes
+                    const temp = template.content.children[i].cloneNode(true);
+                    // Ensure card fills the inner container width and lets height adapt to its content
+                    temp.classList.remove('opacity-0');
+                    temp.classList.add('w-full');
+                    // For inactive adjacent cards, apply blur + reduced opacity and slightly smaller size
+                    if (isPrev || isNext) {
+                        inner.className = `${sizeClass(blurredSize)} rounded-2xl shadow-lg overflow-hidden bg-transparent flex items-stretch justify-stretch blur-sm opacity-80`;
+                        // ensure the blurred card content is not overly dimmed
+                        temp.classList.remove('opacity-80');
+                        temp.classList.add('opacity-100');
+                    }
+
+                    // Active card bring to front
+                    if (isActive) {
+                        outer.classList.add('z-20', 'opacity-100', 'scale-100');
+                    } else if (isPrev || isNext) {
+                        // bring adjacent cards forward, slightly reduced opacity
+                        outer.classList.add('z-10', 'opacity-80');
+                        // apply a very small scale via inline transform so cards look closer in size to the active one
+                        outer.style.transform += ' scale(0.98)';
+                    } else {
+                        outer.classList.add('z-0', 'opacity-0', 'pointer-events-none');
+                    }
+
+                    inner.appendChild(temp);
+                    outer.appendChild(inner);
+                    slides.appendChild(outer);
+                }
+
+                // Animate counter only for the active card
+                setTimeout(() => {
+                    const activeCard = slides.querySelector('.z-20 .group');
+                    if (!activeCard) return;
+                    activeCard.classList.add('animate-fade-up');
+                    activeCard.querySelectorAll('[data-counter]').forEach(animateCounter);
+                }, 120);
+            }
+
+            function next() {
+                current = (current + 1) % cards.length;
+                renderVertical(current);
+            }
+            function prev() {
+                current = (current - 1 + cards.length) % cards.length;
+                renderVertical(current);
+            }
+
+            // Counter animation
+            function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+            function animateCounter(el) {
+                if (el.dataset.done === 'true') return;
+                const end = parseFloat(el.dataset.counter || '0');
+                const prefix = el.dataset.prefix || '';
+                const suffix = el.dataset.suffix || '';
+                const duration = 1200;
+                const startTime = performance.now();
+                function frame(now){
+                    const t = Math.min(1, (now - startTime) / duration);
+                    const val = Math.round(easeOutCubic(t) * end);
+                    el.textContent = `${prefix}${val}${suffix}`;
+                    if (t < 1) requestAnimationFrame(frame); else el.dataset.done = 'true';
+                }
+                requestAnimationFrame(frame);
+            }
+
+            // Controles
+            document.getElementById('metrics-up').addEventListener('click', () => {
+                prev();
+            });
+            document.getElementById('metrics-down').addEventListener('click', () => {
+                next();
+            });
+
+            // Scroll con rueda
+            slides.addEventListener('wheel', (e) => {
+                if (e.deltaY > 0) next();
+                else prev();
+            });
+
+            renderVertical(current);
+        })();
+    </script>
+                </div>
+            </div>
+        </div>
+    <script>
+        // Microanimación de entrada y contadores al hacer scroll
+        (function() {
+            const cards = document.querySelectorAll('#metrics [data-animate]');
+            if (cards.length === 0) return;
+
+            function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+            function animateCounter(el) {
+                if (el.dataset.done === 'true') return;
+                const end = parseFloat(el.dataset.counter || '0');
+                const prefix = el.dataset.prefix || '';
+                const suffix = el.dataset.suffix || '';
+                const duration = 1200; // ms
+                const startTime = performance.now();
+                function frame(now){
+                    const t = Math.min(1, (now - startTime) / duration);
+                    const val = Math.round(easeOutCubic(t) * end);
+                    el.textContent = `${prefix}${val}${suffix}`;
+                    if (t < 1) requestAnimationFrame(frame); else el.dataset.done = 'true';
+                }
+                requestAnimationFrame(frame);
+            }
+
+            if (!('IntersectionObserver' in window)) {
+                cards.forEach(card => {
+                    card.classList.remove('opacity-0');
+                    card.classList.add('animate-fade-up');
+                    card.querySelectorAll('[data-counter]').forEach(animateCounter);
+                });
+                return;
+            }
+
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const card = entry.target;
+                        card.classList.add('animate-fade-up');
+                        card.classList.remove('opacity-0');
+                        card.querySelectorAll('[data-counter]').forEach(animateCounter);
+                        io.unobserve(card);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            cards.forEach(el => io.observe(el));
+        })();
+
+        // Simple drag-to-scroll for carousel
+        (function() {
+            const carousel = document.getElementById('metrics-carousel');
+            if (!carousel) return;
+            let isDown = false, startX, scrollLeft;
+            carousel.addEventListener('mousedown', (e) => {
+                isDown = true;
+                carousel.classList.add('cursor-grabbing');
+                startX = e.pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+            });
+            carousel.addEventListener('mouseleave', () => {
+                isDown = false;
+                carousel.classList.remove('cursor-grabbing');
+            });
+            carousel.addEventListener('mouseup', () => {
+                isDown = false;
+                carousel.classList.remove('cursor-grabbing');
+            });
+            carousel.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 2; //scroll-fast
+                carousel.scrollLeft = scrollLeft - walk;
+            });
+        })();
+    </script>
+</section>
+<section class="py-20 sm:py-32" id="about">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div>
+    <!-- Swiper carousel in Sobre Mí — muestra una foto a la vez con polaroid frames -->
+    <div class="swiper about-swiper rounded-xl overflow-visible">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide flex items-center justify-center bg-background-light/30">
+                <div class="polaroid" style="--rot:-2deg;">
+                    <img src="/images/1.webp" alt="Foto 1" loading="lazy" />
+                    <div class="caption">Estrategia con resultados</div>
+                </div>
+            </div>
+            <div class="swiper-slide flex items-center justify-center bg-background-light/30">
+                <div class="polaroid" style="--rot:1deg;">
+                    <img src="/images/2.webp" alt="Foto 2" loading="lazy" />
+                    <div class="caption">Liderazgo centrado en datos</div>
+                </div>
+            </div>
+            <div class="swiper-slide flex items-center justify-center bg-background-light/30">
+                <div class="polaroid" style="--rot:-1deg;">
+                    <img src="/images/3.webp" alt="Foto 3" loading="lazy" />
+                    <div class="caption">Experiencia comprobada</div>
+                </div>
+            </div>
+            <div class="swiper-slide flex items-center justify-center bg-background-light/30">
+                <div class="polaroid" style="--rot:0.5deg;">
+                    <img src="/images/4.webp" alt="Foto 4" loading="lazy" />
+                    <div class="caption">Compromiso con el cliente</div>
+                </div>
+            </div>
+        </div>
+        <!-- navigation: botones estilizados como los del carrusel de métricas -->
+        <button type="button" class="swiper-button-prev absolute left-3 top-1/2 -translate-y-1/2 z-30 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white text-black focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Anterior">
+            <span class="material-symbols-outlined text-2xl">chevron_left</span>
+        </button>
+        <button type="button" class="swiper-button-next absolute right-3 top-1/2 -translate-y-1/2 z-30 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white text-black focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Siguiente">
+            <span class="material-symbols-outlined text-2xl">chevron_right</span>
+        </button>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
+<div class="prose prose-xl dark:prose-invert font-body text-text-primary/90 dark:text-background-light/90 space-y-6">
+<h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light mb-6">Sobre Mí</h2>
+<p>Soy un emprendedor enfocado en asesorar líderes empresariales mediante estrategias pragmáticas y basadas en datos, ayudándolos a optimizar sus procesos y adaptarse de forma ágil a entornos cambiantes. Mi trayectoria abarca el sector automotriz, financiamiento y seguros en canales B2B y B2C, y cuento con formación como Administrador de Empresas (PUCV), diplomado en servicios (UAI), además de certificaciones internacionales en desarrollo de distribuidores y F&amp;I.</p>
+<p>A lo largo de mi carrera he logrado implementar y desarrollar modelos pioneros en Chile y América Latina, como el modelo F&amp;I, la fintech AmiCar, el primer esquema de ventas híbridas y la consultora Sales Consulting. Actualmente me dedico a potenciar a líderes empresariales mediante consultoría comercial enfocada en resultados, diseño de modelos de negocio innovadores, financiamiento, desarrollo de canales y gestión del cambio, colaborando con firmas reconocidas en múltiples sectores.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 sm:py-32 bg-primary/5 dark:bg-primary/10" id="services">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light">Nuestros Servicios</h2>
+<p class="mt-4 font-body text-xl text-text-secondary">Soluciones a medida para elevar el rendimiento de su concesionario.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-center">
+<div class="p-8">
+        <div class="mb-4 inline-block text-accent">
+            <span class="material-symbols-outlined text-6xl">groups</span>
+        </div>
+<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Capacitación de Equipos de Venta</h3>
+<p class="font-body text-text-secondary">Equipe a su equipo con técnicas de venta avanzadas y conocimiento del producto para cerrar más tratos de manera efectiva.</p>
+</div>
+<div class="p-8">
+        <div class="mb-4 inline-block text-accent">
+            <span class="material-symbols-outlined text-6xl">settings_suggest</span>
+        </div>
+<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Optimización de Procesos</h3>
+<p class="font-body text-text-secondary">Analice y refine su embudo de ventas, desde la generación de leads hasta el seguimiento postventa, para una máxima eficiencia.</p>
+</div>
+<div class="p-8">
+        <div class="mb-4 inline-block text-accent">
+            <span class="material-symbols-outlined text-6xl">trending_up</span>
+        </div>
+<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Estrategia Digital</h3>
+<p class="font-body text-text-secondary">Desarrolle una poderosa presencia en línea y una estrategia de marketing digital para atraer y convertir a los compradores modernos.</p>
+</div>
+<div class="p-8">
+        <div class="mb-4 inline-block text-accent">
+            <span class="material-symbols-outlined text-6xl">support_agent</span>
+        </div>
+<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Consultoría en Gerencia de Ventas</h3>
+<p class="font-body text-text-secondary">Proporcionamos orientación estratégica a los gerentes de ventas para liderar sus equipos hacia el éxito sostenible.</p>
+</div>
+<div class="p-8">
+        <div class="mb-4 inline-block text-accent">
+            <span class="material-symbols-outlined text-6xl">bar_chart</span>
+        </div>
+<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Análisis de Mercado</h3>
+<p class="font-body text-text-secondary">Ofrecemos análisis de mercado detallados para identificar oportunidades de crecimiento y ventajas competitivas.</p>
+</div>
+<div class="p-8">
+        <div class="mb-4 inline-block text-accent">
+            <span class="material-symbols-outlined text-6xl">handshake</span>
+        </div>
+<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Negociación y Cierre</h3>
+<p class="font-body text-text-secondary">Entrenamiento especializado en técnicas de negociación y cierre de ventas para maximizar la rentabilidad.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 sm:py-32" id="team">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light">Nuestro Equipo</h2>
+<p class="mt-4 font-body text-xl text-text-secondary">Profesionales dedicados a su éxito.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+<div class="text-center">
+<img alt="Juan Eduardo Contreras" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUddNnztAmmObBq1rT1O3XFmGdy3ReJ-RwNCTeEsKkdiKNafNT6KsBH6Vt7cZcv8TRyVn0uTvq7fbCfGQh0mwhqK65gaNpmbtdyUyRy8yfSbsDprwmitx105ly048c2MS4jxfF7Ky95kNCpSGcD8h_EsDft2dFUED-CFmaqzRekU-SZuxp6nPvZQJz-ewlJ8wobWAyyxZrIQ7rpozOkFoOFlYiygaW2RBKJVPwAKMZw7x1Qi9-U7UEoboAUMGEVj-0n2wme4S3Guk"/>
+<h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Juan Eduardo Contreras</h3>
+<p class="font-body text-primary">Fundador y Consultor Principal</p>
+</div>
+<div class="text-center">
+<img alt="Ana Sofía Rojas" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqukdvxz7M7uIEzbC1o8cNfozWJSiTQlELpaqsdfDp1LV4YbK7eDfHjUREYqcx8mNx9mT5KgATYVP5zWVsKiMHJ2gcqromw3cFJaF2soTFnhWR1kMBEe0ohz5gQf1G5NLY_QJcNweT26smJAeoWKgCOrEYO43_eVr2M_GLuW5O2nKIeHjeERzB0ne26GtRoOnKbq7r5HlkpF3Cf8L0J_snCeNBPpx28eqCmz3w6QrxW2y5AVtGDVuzU-PlgWputVat-FowSFtk5vA"/>
+<h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Ana Sofía Rojas</h3>
+<p class="font-body text-primary">Especialista en Marketing Digital</p>
+</div>
+<div class="text-center">
+<img alt="Carlos Méndez" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa88r0tgezBzrebC-gxEI8O8aCKEqnpYzS5KraX0ZNQqNdLuPyjgM7HxtpOZvKByi5B72MLPQJhwzIAn7YF2GYRMsDO_16_ap8qRX0deHKepGRE5nHQn8ZJvcXhZXsm9KJJFYru5bQKgB6glqE8JgZrq4QipQyAT8WyD9ISp_hW6leGmfW8YqGev7MAhVmWAfWeKcmpTg-8yxBiX0nQQ5wnS5i7EYIKqe4ksv6jE-_xmsZkEVARNqP5PGU9Iuxt-_I1iJQ6qQXzBE"/>
+<h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Carlos Méndez</h3>
+<p class="font-body text-primary">Analista de Datos y Procesos</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 sm:py-32 bg-primary/5 dark:bg-primary/10" id="success">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light">Casos de Éxito</h2>
+<p class="mt-4 font-body text-xl text-text-secondary">Resultados reales para clientes reales.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+<img alt="Red sports car" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFT6fNGp6konfFfpCmTpYJxv9M3HyLWhgM7Vbd0h1RvbxPuCGn0PB-Uhp_KhHz92FauMjoDM1BYuPlS230So5LgbH1kUKsttKwfu3XsDgbpr5Z3jgU0dFdfeBRzZdo4yM4aGqUiNOa05o73AA5PjJWzy9RKo7_4lyF6aGxKl_bM8jwLkbPKNcOB4d9Es7jjWL4GX3IbgXxyBjvNOzFZHzRt-8LcV5bFJ5328N2utvkuT-LmAhN3CdqNk5afT1OqvXRApJ7XMsBMJk"/>
+<div class="p-6">
+<p class="text-3xl font-bold text-accent">+35%</p>
+<h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Aumento en Cierres de Venta</h3>
+<p class="font-body mt-2 text-text-secondary">Concesionario AutoLíder, Chile</p>
+</div>
+</div>
+<div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+<img alt="Luxury car showroom" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiuvZtqcrmOHkWrFugF30x0vuuDs1SObyf5bCInKrTOEypJJkK8nqBHeXcirR-z9nK_OhuZcA-m-Ul7aSXfhwJGU0ro7lTgWL3esJu6MC6x1j1oS0HbWMBO6YRblIcHmkv-FiBWKQXP6XvoJuxUH2RCvYDlkljs5bFDrAj6n_8k5s5oCzRFl2RSkjr9ki0O4rGBxn__7JxJ9C8L6jyO46YpyBF5S8018AnrM9gg7y_QkD0mvNDvVQoE2i84lDRLU6PVdyIs1gjBrE"/>
+<div class="p-6">
+<p class="text-3xl font-bold text-accent">+50%</p>
+<h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Incremento en Leads Calificados</h3>
+<p class="font-body mt-2 text-text-secondary">Grupo Motor, Colombia</p>
+</div>
+</div>
+<div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+<img alt="Customer signing papers" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLq09KwVWkF0usdWz5saWoa_GG006aY13eLI8oOrfjWiUKZcdzCLopvHYNAd8uiaJxrF8sfp0SrixQ88vY8S2kxSk5xz_3FqLxMHljQoSefIcZ0YheKehTvkUuvhGE1au5N1cqF-YrejH0De_p3hZiOh8LISbIKY6kUVE1MgObuNaKRtYd8t031eWU8Ar15qm_re3PzA1WOFDSKtE0DsZnt73fL6o_hbij4h32qBLrznJCYXUx_zIYtwS1W9ca6UuIGZWZVMe1Xkk"/>
+<div class="p-6">
+<p class="text-3xl font-bold text-accent">-25%</p>
+<h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Reducción del Ciclo de Venta</h3>
+<p class="font-body mt-2 text-text-secondary">Automotores del Pacífico, Perú</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 sm:py-32" id="testimonials">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light">Lo que Dicen Nuestros Clientes</h2>
+<p class="mt-4 font-body text-xl text-text-secondary">Historias de éxito de los principales concesionarios de la región.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
+<p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">"La experiencia de Juan fue un punto de inflexión para nuestro equipo de ventas. Su capacitación fue práctica, atractiva y produjo resultados inmediatos. Nuestras tasas de cierre han mejorado en un 20% en solo un trimestre."</p>
+<div>
+<p class="font-display font-bold text-text-primary dark:text-background-light">Carlos Rodríguez</p>
+<p class="font-body text-sm text-text-secondary">Gerente de Ventas, Auto Andino</p>
+</div>
+</div>
+<div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
+<p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">"El plan de optimización de procesos que implementó Juan agilizó toda nuestra operación. Ahora somos más eficientes, la satisfacción de nuestros clientes ha aumentado y nuestro resultado final lo refleja."</p>
+<div>
+<p class="font-display font-bold text-text-primary dark:text-background-light">Maria Gonzalez</p>
+<p class="font-body text-sm text-text-secondary">Gerente General, Santiago Motors</p>
+</div>
+</div>
+<div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
+<p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">"La estrategia digital desarrollada por JEC transformó nuestra presencia en línea. Estamos atrayendo a una nueva generación de compradores y nuestros leads son de mucha mayor calidad."</p>
+<div>
+<p class="font-display font-bold text-text-primary dark:text-background-light">Javier Fernández</p>
+<p class="font-body text-sm text-text-secondary">Director de Marketing, Riviera Automotriz</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 sm:py-32 bg-primary/10 dark:bg-primary/20" id="contact">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<h2 class="font-display text-5xl sm:text-6xl font-bold tracking-tight text-text-primary dark:text-background-light">¿Listo para Acelerar sus Ventas?</h2>
+<p class="mt-6 font-body text-xl max-w-3xl mx-auto text-text-secondary">Discutamos cómo podemos adaptar un plan de consultoría para cumplir con los objetivos únicos de su concesionario. Programe una consulta gratuita para comenzar.</p>
+<div class="mt-10">
+<a class="inline-flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-8 bg-primary text-white font-display text-lg font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors transform-gpu" href="#">
+<span class="truncate">Agendar Consulta</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-text-primary dark:bg-black">
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center flex-col md:flex-row gap-8">
+<div class="text-center md:text-left">
+<p class="font-display text-base text-background-light">Juan Eduardo Contreras</p>
+<p class="font-body text-sm text-background-light/70">Consultoría en Ventas Automotrices</p>
+</div>
+<div class="flex space-x-6">
+<a class="text-background-light/70 hover:text-accent transition-colors" href="#">
+<span class="sr-only">LinkedIn</span>
+<svg aria-hidden="true" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+</svg>
+</a>
+<a class="text-background-light/70 hover:text-accent transition-colors" href="mailto:contacto@jec-consulting.com">
+<span class="sr-only">Email</span>
+<span class="material-symbols-outlined">mail</span>
+</a>
+<a class="text-background-light/70 hover:text-accent transition-colors" href="tel:+525512345678">
+<span class="sr-only">Phone</span>
+<span class="material-symbols-outlined">call</span>
+</a>
+</div>
+</div>
+<div class="mt-8 border-t border-background-light/20 pt-8 text-center">
+<p class="font-body text-xs text-background-light/50">© 2024 Juan Eduardo Contreras. Todos los Derechos Reservados.</p>
+</div>
+</div>
+    <!-- Swiper JS (CDN) and init for About carousel -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        (function(){
+            try {
+                const swiper = new Swiper('.about-swiper', {
+                    slidesPerView: 1,
+                    centeredSlides: false, // don't center with partial peeks
+                    spaceBetween: 0,       // no gap so only one image is visible
+                    slidesPerGroup: 1,
+                    loop: true,            // loop so autoplay cycles continuously
+                    speed: 600,
+                    autoHeight: true,
+                    watchOverflow: true,
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    pagination: { el: '.swiper-pagination', clickable: true },
+                    keyboard: { enabled: true },
+                    lazy: { loadPrevNext: true },
+                });
+            } catch (err) { console.error('Swiper init error', err); }
+        })();
+    </script>
+</footer>
+</div>
+</div>
+</body></html>
