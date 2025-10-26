@@ -39,12 +39,91 @@
             },
         }
     </script>
+    <script>
+        // Mobile menu toggle
+        (function(){
+            const btn = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+            if (!btn || !menu) return;
+            function toggle(open) {
+                const isOpen = typeof open === 'boolean' ? open : menu.classList.contains('hidden');
+                if (isOpen) {
+                    menu.classList.remove('hidden');
+                    btn.setAttribute('aria-expanded', 'true');
+                } else {
+                    menu.classList.add('hidden');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+            }
+            btn.addEventListener('click', () => toggle());
+            // close on escape
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { menu.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); } });
+            // close when clicking outside (on small screens)
+            document.addEventListener('click', (e) => {
+                if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    menu.classList.add('hidden');
+                    btn.setAttribute('aria-expanded','false');
+                }
+            });
+        })();
+    </script>
 <style>
         .text-mask {
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        /* Decorative underline for h2: centered double-segment bar (teal + orange) */
+        h2 {
+            display: inline-block; /* keep size to content */
+            position: relative;
+            padding-bottom: 1rem; /* space for the underline */
+        }
+        /* Default: underline aligned to the left edge of the h2 (suits left-aligned headings) */
+        h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            transform: none;
+            top: 100%;
+            height: 6px;
+            width: 96px;
+            margin-top: 8px; /* gap between text and bar */
+            border-radius: 4px;
+            background-image: linear-gradient(90deg, #049B9B 0% 50%, #FFA500 50% 100%);
+        }
+        /* When the heading is centered (parent has text-center or h2 has text-center), center the underline */
+        .text-center h2::after,
+        h2.text-center::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        /* Allow disabling the underline for specific headings (e.g., the logo) */
+        h2.no-underline::after { display: none !important; }
+
+        /* Reinforce decorative underline for all h2 (except when explicitly disabled above or for #services) */
+        h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 100%;
+            height: 6px;
+            width: 96px;
+            margin-top: 8px;
+            border-radius: 4px;
+            background-image: linear-gradient(90deg, #049B9B 0% 50%, #FFA500 50% 100%) !important;
+            display: block !important;
+        }
+        /* Slightly smaller underline on narrow screens */
+        @media (max-width: 640px) {
+            h2::after { width: 72px; height: 5px; }
+        }
+        /* Remove decorative line for services heading specifically */
+        #services h2::after { display: none !important; }
+
+        /* Center everything in marcas: heading is already centered; ensure grid items are vertically and horizontally centered */
+        #marcas { text-align: center; }
+        .marcas-grid { justify-items: center; align-items: center; place-items: center; margin-left: auto; margin-right: auto; }
         /* Polaroid-style photo frame for Swiper slides */
         .polaroid {
             background: rgba(255,255,255,1);
@@ -114,6 +193,88 @@
             #metrics .metrics-title { margin-top: 1.5rem; }
         }
     </style>
+    <style>
+        /* Services section: teal background and white text; keep icons accent-colored */
+        #services { background-color: #049B9B !important; }
+        #services, #services h2, #services p, #services h3, #services .font-body, #services .font-display { color: #ffffff !important; }
+        /* Force icon color to accent (matches tailwind config accent: #FFA500) */
+        #services .text-accent { color: #FFA500 !important; }
+        /* Team: collapsible description and 'Ver más' button */
+        .team-desc { max-height: 0; overflow: hidden; transition: max-height 0.36s ease, opacity 0.28s ease; opacity: 0; }
+        .team-desc.expanded { max-height: 2400px; opacity: 1; }
+        .team-toggle { background: transparent; border: none; padding: 0; cursor: pointer; color: inherit; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .team-toggle:focus { outline: 2px solid rgba(4,155,155,0.18); outline-offset: 3px; }
+        .team-toggle .toggle-arrow { transition: transform 0.25s ease; display: inline-flex; }
+        /* Ensure all team cards have the same size and support 3D hover/expand transforms */
+        /* Background image for team section with light/dark overlays for readability */
+        #team {
+            overflow: visible;
+            background-image: url('/images/bg-team.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        /* Dark mode: use a darker translucent overlay so text remains readable */
+        .dark #team {
+            background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('/images/bg-team.webp');
+            color: #ffffff !important;
+        }
+        #team .grid { overflow: visible; }
+        #team .grid .text-center { overflow: visible; }
+        #team .grid .text-center > div {
+            min-height: 400px; /* unify card height when collapsed (slightly increased) */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            perspective: 1200px; /* enable 3D perception for children */
+            -webkit-perspective: 1200px;
+            transition: transform 0.28s ease;
+            transform-style: preserve-3d;
+            overflow: visible; /* important to avoid clipping rotated children */
+            position: relative; /* create a stacking context we can control */
+            z-index: 1;
+            /* frosted / semi-transparent card so background shows blurred behind */
+            background-color: rgba(255,255,255,0.72) !important;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        /* Portrait image subtle 3D flip */
+        #team .grid .text-center > div img {
+            transition: transform 0.6s cubic-bezier(.2,.9,.2,1), box-shadow 0.25s ease, filter 0.25s ease;
+            transform-origin: center center;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+            position: relative; /* ensure z-index works */
+            z-index: 5; /* keep image above card background by default */
+            /* subtle base shadow */
+            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+        }
+    /* Hovering the card flips the photo a few degrees on Y axis. Add a tiny translateZ so the image renders above and isn't clipped. */
+    /* On hover, slightly rotate the whole card and apply a moderate Y-rotation to the photo */
+    /* Reduced rotation so the effect is subtle and less likely to overlap content */
+    #team .grid .text-center > div:hover { transform: translateY(-6px) rotateY(2deg); z-index: 30; }
+    /* Keep the image clearly above the card using a very high z-index, modest translateZ and a stronger layered shadow for 3D depth */
+    #team .grid .text-center > div:hover img {
+        transform: translateZ(32px) rotateY(14deg);
+        z-index: 9999;
+        box-shadow: 0 26px 50px rgba(4,155,155,0.12), 0 12px 30px rgba(0,0,0,0.18), 0 4px 10px rgba(0,0,0,0.08);
+        filter: drop-shadow(0 10px 24px rgba(0,0,0,0.12));
+    }
+    /* When the card is expanded (via Ver más) keep the photo rotated and raised */
+    /* When expanded, keep a gentle tilt and ensure the image stays on top */
+    /* When expanded, allow the card to grow so the description fits comfortably */
+    #team .grid .text-center > div.expanded { z-index: 30; transform: rotateY(1deg); min-height: 520px; }
+    #team .grid .text-center > div.expanded img {
+        transform: translateZ(32px) rotateY(14deg);
+        z-index: 9999;
+        box-shadow: 0 26px 50px rgba(4,155,155,0.12), 0 12px 30px rgba(0,0,0,0.18), 0 4px 10px rgba(0,0,0,0.08);
+        filter: drop-shadow(0 10px 24px rgba(0,0,0,0.12));
+    }
+    </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-text-primary dark:text-background-light">
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
@@ -134,23 +295,44 @@
 </defs>
 </svg>
 </div>
-<h2 class="font-display text-2xl font-bold tracking-tighter">JEC</h2>
+<h2 class="font-display text-2xl font-bold tracking-tighter no-underline">JEC</h2>
 </div>
 <nav class="hidden md:flex items-center gap-8">
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#about">About</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#services">Services</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#team">Our Team</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#success">Success Stories</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#testimonials">Testimonials</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#contact">Contact</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#about">Sobre Mí</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#services">Servicios</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#team">Nuestro Equipo</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#success">Casos de Éxito</a>
+<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#testimonials">Testimonios</a>
 </nav>
 <div class="hidden md:block">
 <a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-primary text-white font-display text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors" href="#contact">
-<span class="truncate">Schedule a Consultation</span>
+<span class="truncate">Agendar Consulta</span>
 </a>
 </div>
+            <!-- Mobile menu toggle -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" aria-expanded="false" aria-controls="mobile-menu" class="inline-flex items-center justify-center p-2 rounded-md text-text-primary hover:bg-background-light/60 focus:outline-none focus:ring-2 focus:ring-primary">
+                                    <span class="sr-only">Abrir menú principal</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
 </div>
 </div>
+    <!-- Mobile menu (hidden by default) -->
+    <div id="mobile-menu" class="md:hidden hidden absolute left-0 right-0 top-full bg-background-light dark:bg-background-dark/95 shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <nav class="flex flex-col gap-4">
+                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#about">Sobre Mí</a>
+                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#services">Servicios</a>
+                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#team">Nuestro Equipo</a>
+                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#success">Casos de Éxito</a>
+                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#testimonials">Testimonios</a>
+                <a class="inline-flex items-center justify-center rounded-lg bg-primary text-white px-4 py-2 mt-2 w-max" href="#contact">Agendar Consulta</a>
+            </nav>
+        </div>
+    </div>
 </header>
 <main class="flex-1">
 <section class="relative h-screen flex items-center justify-start bg-background-light dark:bg-background-dark overflow-hidden">
@@ -376,6 +558,7 @@
             renderVertical(current);
         })();
     </script>
+    
                 </div>
             </div>
         </div>
@@ -557,61 +740,33 @@
 </div>
 </div>
 </section>
-<!-- Marcas carousel: 1 per view on mobile, 5 per view on desktop -->
-<section class="py-12 sm:py-16" id="marcas">
+<!-- Marcas: sección estática con logos (sin carrusel) -->
+<section class="py-12 sm:py-16 bg-white" id="marcas">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 text-center">Marcas con las que trabajamos</h2>
-        <div class="swiper marcas-swiper rounded-xl">
-            <div class="swiper-wrapper items-center py-6">
-                <!-- Slides: one image per slide -->
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/1%20(2).webp" alt="marca-1" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/2%20(1).webp" alt="marca-2" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/3%20(1).webp" alt="marca-3" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/4%20(1).webp" alt="marca-4" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/5.webp" alt="marca-5" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/6.webp" alt="marca-6" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/7.webp" alt="marca-7" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/8.webp" alt="marca-8" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/9.webp" alt="marca-9" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/10.webp" alt="marca-10" class="max-h-20 object-contain"/></div>
-                <div class="swiper-slide flex items-center justify-center"><img src="/images/marcas/11.webp" alt="marca-11" class="max-h-20 object-contain"/></div>
-            </div>
-            <button class="swiper-button-prev absolute left-3 top-1/2 -translate-y-1/2 z-30 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white text-black focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Anterior marcas">
-                <span class="material-symbols-outlined text-2xl">chevron_left</span>
-            </button>
-            <button class="swiper-button-next absolute right-3 top-1/2 -translate-y-1/2 z-30 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 shadow transition hover:bg-primary hover:text-white text-black focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Siguiente marcas">
-                <span class="material-symbols-outlined text-2xl">chevron_right</span>
-            </button>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center marcas-grid">
+            <img src="/images/marcas/1%20(2).webp" alt="marca-1" class="object-contain"/>
+            <img src="/images/marcas/2%20(1).webp" alt="marca-2" class="object-contain"/>
+            <img src="/images/marcas/3%20(1).webp" alt="marca-3" class="object-contain"/>
+            <img src="/images/marcas/4%20(1).webp" alt="marca-4" class="object-contain"/>
+            <img src="/images/marcas/5.webp" alt="marca-5" class="object-contain"/>
+            <img src="/images/marcas/6.webp" alt="marca-6" class="object-contain"/>
+            <img src="/images/marcas/7.webp" alt="marca-7" class="object-contain"/>
+            <img src="/images/marcas/8.webp" alt="marca-8" class="object-contain"/>
+            <img src="/images/marcas/9.webp" alt="marca-9" class="object-contain"/>
+            <img src="/images/marcas/10.webp" alt="marca-10" class="object-contain"/>
+            <img src="/images/marcas/11.webp" alt="marca-11" class="object-contain"/>
         </div>
     </div>
 </section>
 
 <style>
-    /* marcas swiper images */
-    .marcas-swiper .swiper-slide img { max-height: 80px; width: auto; }
+    /* Marcas: larger logos and force pure white background */
+    #marcas { background-color: #ffffff !important; }
+    .marcas-grid img { max-height: 120px; width: auto; }
+    @media (min-width: 768px) { .marcas-grid img { max-height: 160px; } }
+    @media (min-width: 1280px) { .marcas-grid img { max-height: 200px; } }
 </style>
-
-<!-- init marcas swiper -->
-<script>
-    (function(){
-        try {
-            new Swiper('.marcas-swiper', {
-                slidesPerView: 1,
-                spaceBetween: 16,
-                loop: true,
-                navigation: { nextEl: '.marcas-swiper .swiper-button-next', prevEl: '.marcas-swiper .swiper-button-prev' },
-                pagination: { el: '.marcas-swiper .swiper-pagination', clickable: true },
-                breakpoints: {
-                    768: { slidesPerView: 3 },
-                    1024: { slidesPerView: 5 }
-                },
-                watchOverflow: true,
-            });
-        } catch (e) { console.error('marcas swiper init error', e); }
-    })();
-</script>
-
-<!-- end marcas carousel -->
 
 <section class="py-20 sm:py-32" id="team">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -621,38 +776,48 @@
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
     <div class="text-center">
-        <img alt="Felipe Reyes" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="/images/team/Felipe-Reyes.webp"/>
-        <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Felipe Reyes</h3>
-        <p class="font-body text-primary">Consultor en Marketing de ventas y postventa.</p>
-        <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Marketing. Licenciado en Comunicaciones (UCH), Master en Marketing (UAI), Master Gestión Comercial (PUCH). 20 años experiencia profesional y laboral en el retail automotriz, movilidad y marketing de ventas y postventa. Se especializa en el diseño e implementación de estrategias integrales de satisfacción y rentabilidad del ciclo de vida del cliente.</p>
+        <div class="p-6 bg-background-light dark:bg-background-dark/80 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-2">
+            <img alt="Felipe Reyes" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-md" src="/images/team/Felipe-Reyes.webp"/>
+            <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Felipe Reyes</h3>
+            <p class="font-body text-primary">Consultor en Marketing de ventas y postventa.</p>
+            <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Marketing. Licenciado en Comunicaciones (UCH), Master en Marketing (UAI), Master Gestión Comercial (PUCH). 20 años experiencia profesional y laboral en el retail automotriz, movilidad y marketing de ventas y postventa. Se especializa en el diseño e implementación de estrategias integrales de satisfacción y rentabilidad del ciclo de vida del cliente.</p>
+        </div>
     </div>
 
     <div class="text-center">
-        <img alt="Víctor Cornejo" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="/images/team/Victor-Cornejo.webp"/>
-        <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Víctor Cornejo</h3>
-        <p class="font-body text-primary">Consultor en Ventas y Desarrollo Humano.</p>
-        <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Formación y Adaptación. Licenciado en Psicología (UdeA), Master Coach PNL, Master Coach (varios), Master Trainer. 28 años de experiencia profesional y laboral en el retail automotriz, formación, coaching y mentoring en ventas y Desarrollo Humano. Se especializa en el diseño e implementación de estrategias integrales de formación y adaptación orientadas a la mejora del desempeño comercial y operacional.</p>
+        <div class="p-6 bg-background-light dark:bg-background-dark/80 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-2">
+            <img alt="Víctor Cornejo" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-md" src="/images/team/Victor-Cornejo.webp"/>
+            <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Víctor Cornejo</h3>
+            <p class="font-body text-primary">Consultor en Ventas y Desarrollo Humano.</p>
+            <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Formación y Adaptación. Licenciado en Psicología (UdeA), Master Coach PNL, Master Coach (varios), Master Trainer. 28 años de experiencia profesional y laboral en el retail automotriz, formación, coaching y mentoring en ventas y Desarrollo Humano. Se especializa en el diseño e implementación de estrategias integrales de formación y adaptación orientadas a la mejora del desempeño comercial y operacional.</p>
+        </div>
     </div>
 
     <div class="text-center">
-        <img alt="Nelson García" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="/images/team/Nelson-Garcia.webp"/>
-        <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Nelson García</h3>
-        <p class="font-body text-primary">Consultor en CRM y Marketing basado en Datos (DDM).</p>
-        <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Ecosistemas Digitales. Licenciado en Ciencias de la Comunicación (UAH), Diplomado Marketing Metrics (FEN/Uch), Diplomado Customer Centric (IEBS), Master Scrum (eClass Chile). 10 años liderando proyectos fundados en DDM, especialmente en la ejecución de estrategias CRM y en la conducción de proyectos de inteligencia de negocios basados en datos para detectar oportunidades en el comportamiento y preferencias de los clientes, desarrollando modelos de relacionamiento que aseguren interacciones de valor.</p>
+        <div class="p-6 bg-background-light dark:bg-background-dark/80 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-2">
+            <img alt="Nelson García" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-md" src="/images/team/Nelson-Garcia.webp"/>
+            <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Nelson García</h3>
+            <p class="font-body text-primary">Consultor en CRM y Marketing basado en Datos (DDM).</p>
+            <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Ecosistemas Digitales. Licenciado en Ciencias de la Comunicación (UAH), Diplomado Marketing Metrics (FEN/Uch), Diplomado Customer Centric (IEBS), Master Scrum (eClass Chile). 10 años liderando proyectos fundados en DDM, especialmente en la ejecución de estrategias CRM y en la conducción de proyectos de inteligencia de negocios basados en datos para detectar oportunidades en el comportamiento y preferencias de los clientes, desarrollando modelos de relacionamiento que aseguren interacciones de valor.</p>
+        </div>
     </div>
 
     <div class="text-center">
-        <img alt="Roberto Balocchi" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="/images/team/Roberto-Balocchi.webp"/>
-        <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Roberto Balocchi</h3>
-        <p class="font-body text-primary">Consultor en F&I y Financiamiento Comercial.</p>
-        <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de F&I. Licenciado en Administración de Empresas (IFE), MBA (IDE), F&I Automotive Senior Trainer (JM&A). Especialista en Financiamiento Comercial con más de 20 años de experiencia en el retail automotriz, F&I y maquinaria industrial.</p>
+        <div class="p-6 bg-background-light dark:bg-background-dark/80 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-2">
+            <img alt="Roberto Balocchi" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-md" src="/images/team/Roberto-Balocchi.webp"/>
+            <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Roberto Balocchi</h3>
+            <p class="font-body text-primary">Consultor en F&I y Financiamiento Comercial.</p>
+            <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de F&I. Licenciado en Administración de Empresas (IFE), MBA (IDE), F&I Automotive Senior Trainer (JM&A). Especialista en Financiamiento Comercial con más de 20 años de experiencia en el retail automotriz, F&I y maquinaria industrial.</p>
+        </div>
     </div>
 
     <div class="text-center">
-        <img alt="Pedro Giglio" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg" src="/images/team/Pedro-Giglio.webp"/>
-        <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Pedro Giglio</h3>
-        <p class="font-body text-primary">Consultor en Gestión de Concesionarios y Postventa.</p>
-        <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Gestión de Concesionarios y Postventa. Ingeniero Comercial (UDP). Más de 25 años liderando proyectos en empresas nacionales y multinacionales del sector maquinarias, retail y consumo masivo, y 10 años en el retail automotriz liderando operaciones comerciales y de postventa en importadores y concesionarios con demostradas habilidades en el desarrollo e implementación de estrategias de negocios que impulsan crecimiento, rentabilidad y participación de mercado junto con procesos de reorganización empresarial.</p>
+        <div class="p-6 bg-background-light dark:bg-background-dark/80 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-2">
+            <img alt="Pedro Giglio" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-md" src="/images/team/Pedro-Giglio.webp"/>
+            <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Pedro Giglio</h3>
+            <p class="font-body text-primary">Consultor en Gestión de Concesionarios y Postventa.</p>
+            <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Gestión de Concesionarios y Postventa. Ingeniero Comercial (UDP). Más de 25 años liderando proyectos en empresas nacionales y multinacionales del sector maquinarias, retail y consumo masivo, y 10 años en el retail automotriz liderando operaciones comerciales y de postventa en importadores y concesionarios con demostradas habilidades en el desarrollo e implementación de estrategias de negocios que impulsan crecimiento, rentabilidad y participación de mercado junto con procesos de reorganización empresarial.</p>
+        </div>
     </div>
 
 </div>
@@ -765,6 +930,49 @@
 </div>
     <!-- Swiper JS (CDN) and init for About carousel -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // Team: add "Ver más" toggle button to each member card and wire expand/collapse
+        (function(){
+            document.addEventListener('DOMContentLoaded', function(){
+                const cardContainers = Array.from(document.querySelectorAll('#team .grid .text-center > div'));
+                if (!cardContainers.length) return;
+                cardContainers.forEach((card, i) => {
+                    const paragraphs = Array.from(card.querySelectorAll('p'));
+                    if (paragraphs.length < 2) return; // expect at least role + long desc
+                    const desc = paragraphs[paragraphs.length - 1];
+                    const id = `team-desc-${i+1}`;
+                    desc.id = id;
+                    desc.classList.add('team-desc');
+
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'team-toggle inline-flex items-center gap-2 mt-3 text-primary font-medium focus:outline-none';
+                    btn.setAttribute('aria-expanded', 'false');
+                    btn.setAttribute('aria-controls', id);
+                    btn.innerHTML = '<span class="toggle-label">Ver más</span><span class="material-symbols-outlined toggle-arrow" aria-hidden="true">expand_more</span>';
+
+                    // Insert button before the description paragraph
+                    desc.parentNode.insertBefore(btn, desc);
+
+                    btn.addEventListener('click', () => {
+                        const expanded = btn.getAttribute('aria-expanded') === 'true';
+                        btn.setAttribute('aria-expanded', String(!expanded));
+                        if (expanded) {
+                            desc.classList.remove('expanded');
+                            card.classList.remove('expanded');
+                            btn.querySelector('.toggle-label').textContent = 'Ver más';
+                            btn.querySelector('.toggle-arrow').style.transform = '';
+                        } else {
+                            desc.classList.add('expanded');
+                            card.classList.add('expanded');
+                            btn.querySelector('.toggle-label').textContent = 'Ver menos';
+                            btn.querySelector('.toggle-arrow').style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+            });
+        })();
+    </script>
     <script>
         (function(){
             try {
