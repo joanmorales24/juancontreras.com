@@ -908,6 +908,11 @@ html {
   margin-right: auto;
 }
 
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -1098,6 +1103,10 @@ html {
   width: max-content;
 }
 
+.w-10 {
+  width: 2.5rem;
+}
+
 .min-w-\[84px\] {
   min-width: 84px;
 }
@@ -1124,6 +1133,14 @@ html {
 
 .max-w-\[28rem\] {
   max-width: 28rem;
+}
+
+.max-w-\[360px\] {
+  max-width: 360px;
+}
+
+.max-w-\[420px\] {
+  max-width: 420px;
 }
 
 .flex-1 {
@@ -1865,6 +1882,11 @@ html {
 }
 
 @media (min-width: 640px) {
+  .sm\:mx-0 {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -1908,6 +1930,14 @@ html {
     top: 50%;
   }
 
+  .md\:left-auto {
+    left: auto;
+  }
+
+  .md\:right-0 {
+    right: 0px;
+  }
+
   .md\:mb-0 {
     margin-bottom: 0px;
   }
@@ -1936,6 +1966,10 @@ html {
     height: auto;
   }
 
+  .md\:h-\[42px\] {
+    height: 42px;
+  }
+
   .md\:w-1\/2 {
     width: 50%;
   }
@@ -1958,6 +1992,10 @@ html {
 
   .md\:w-\[65\%\] {
     width: 65%;
+  }
+
+  .md\:w-\[42px\] {
+    width: 42px;
   }
 
   .md\:-translate-y-1\/2 {
