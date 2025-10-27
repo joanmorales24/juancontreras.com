@@ -550,20 +550,41 @@
             }
 
             // Controles
-            document.getElementById('metrics-up').addEventListener('click', () => {
-                prev();
-            });
-            document.getElementById('metrics-down').addEventListener('click', () => {
-                next();
-            });
+            const upBtn = document.getElementById('metrics-up');
+            const downBtn = document.getElementById('metrics-down');
+            upBtn.addEventListener('click', () => { prev(); resetAutoplay(); });
+            downBtn.addEventListener('click', () => { next(); resetAutoplay(); });
 
             // Scroll con rueda
             slides.addEventListener('wheel', (e) => {
                 if (e.deltaY > 0) next();
                 else prev();
+                resetAutoplay();
             });
 
+            // --- Autoplay ---
+            const AUTOPLAY_DELAY = 4000; // ms
+            let autoplayTimer = null;
+
+            function startAutoplay() {
+                stopAutoplay();
+                autoplayTimer = setInterval(() => { next(); }, AUTOPLAY_DELAY);
+            }
+            function stopAutoplay() {
+                if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+            }
+            function resetAutoplay() { stopAutoplay(); startAutoplay(); }
+
+            // Pause on hover / touch, resume on leave
+            slides.addEventListener('mouseenter', stopAutoplay);
+            slides.addEventListener('mouseleave', startAutoplay);
+            slides.addEventListener('touchstart', stopAutoplay, { passive: true });
+            slides.addEventListener('touchend', () => { setTimeout(startAutoplay, 600); }, { passive: true });
+
+            // Start
             renderVertical(current);
+            // give initial render a small delay before autoplay to allow counters to animate
+            setTimeout(startAutoplay, 600);
         })();
     </script>
     
