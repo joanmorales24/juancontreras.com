@@ -288,43 +288,101 @@
         filter: drop-shadow(0 10px 24px rgba(0,0,0,0.12));
     }
     </style>
+    <style>
+        /* Glass bevel style: tinted, beveled glass panel using a subtle turquoise tint for brand coherence */
+        .glass-bevel {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* turquesa más oscuro y con mayor opacidad para un tono más profundo */
+            /* color ligeramente más profundo (3,120,120) con alpha alta */
+            background: linear-gradient(180deg, rgba(3,120,120,0.48), rgba(0,0,0,0.12));
+            border: 1px solid rgba(3,120,120,0.36);
+            /* sombra ajustada para mantener jerarquía sin oscurecer en exceso */
+            box-shadow: 0 22px 60px rgba(0,0,0,0.36), inset 0 1px 0 rgba(255,255,255,0.006);
+        }
+        /* Dark mode variant: slightly stronger smoked tint but keep a hint of turquoise */
+        .dark .glass-bevel {
+            /* dark mode: tono turquesa más profundo y opaco para destacar sobre fondo oscuro */
+            background: linear-gradient(180deg, rgba(3,120,120,0.44), rgba(0,0,0,0.64));
+            border: 1px solid rgba(3,120,120,0.32);
+            box-shadow: 0 26px 84px rgba(0,0,0,0.68), inset 0 1px 0 rgba(255,255,255,0.002);
+        }
+        /* Make sure rounded corners clip children */
+        .glass-bevel.overflow-hidden { overflow: hidden; }
+        /* Adaptive contrast for nav text: negative-like behavior */
+        .glass-bevel .adaptive-contrast {
+            /* use black as base so 'difference' yields a clear negative on light tints; fallback will still be readable */
+            color: #000000;
+            mix-blend-mode: difference;
+            -webkit-font-smoothing: antialiased;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.03);
+            font-size: 1.05rem; /* slightly larger base size for better legibility */
+        }
+        /* On hover/focus show brand color and disable blending for clarity */
+        .glass-bevel .adaptive-contrast:hover,
+        .glass-bevel .adaptive-contrast:focus {
+            mix-blend-mode: normal;
+            color: #FFA500; /* accent (naranja) */
+            text-shadow: none;
+        }
+
+        /* Fallback for Chrome or environments where mix-blend produces poor contrast: add subtle text-stroke when blend is not desirable */
+        @supports (-webkit-text-stroke: 0.5px black) {
+            .glass-bevel .adaptive-contrast {
+                -webkit-text-stroke: 0.35px rgba(0,0,0,0.12);
+            }
+        }
+        /* If Chromium detected, disable the negative blend and use high-contrast white with subtle shadow */
+        .chromium-no-negative .glass-bevel .adaptive-contrast {
+            mix-blend-mode: normal !important;
+            color: #ffffff !important;
+            -webkit-text-stroke: 0 !important;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.35) !important;
+        }
+        .chromium-no-negative .glass-bevel .adaptive-contrast:hover,
+        .chromium-no-negative .glass-bevel .adaptive-contrast:focus {
+            color: #049b9b !important;
+            mix-blend-mode: normal !important;
+            text-shadow: none !important;
+        }
+    </style>
+    <script>
+        // Detect Chromium-based browsers to disable mix-blend negative effect when it renders poorly
+        (function(){
+            try {
+                var ua = navigator.userAgent || '';
+                var isChromium = /Chrome\/.+/.test(ua) && !/Edg\//.test(ua) && !/OPR\//.test(ua);
+                if (isChromium) document.documentElement.classList.add('chromium-no-negative');
+            } catch(e) { /* ignore */ }
+        })();
+    </script>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-text-primary dark:text-background-light">
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
 <div class="layout-container flex h-full grow flex-col">
-<header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between h-20">
-<div class="flex items-center gap-4 text-text-primary dark:text-background-light">
-<div class="size-8 text-primary">
-<svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_6_319)">
-<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"></path>
-</g>
-<defs>
-<clipPath id="clip0_6_319">
-<rect fill="white" height="48" width="48"></rect>
-</clipPath>
-</defs>
-</svg>
-</div>
-<h2 class="font-display text-2xl font-bold tracking-tighter no-underline">JEC</h2>
-</div>
+<header class="fixed top-4 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 glass-bevel rounded-xl overflow-hidden">
+        <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-4 text-text-primary dark:text-background-light">
+                <a href="/" class="flex items-center gap-3" aria-label="Juan Eduardo Contreras">
+                    <img src="/images/logo.svg" alt="Juan Eduardo Contreras - logo" class="w-24 h-24 object-contain" />
+                </a>
+                </div>
 <nav class="hidden md:flex items-center gap-8">
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#about">Sobre Mí</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#services">Servicios</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#team">Nuestro Equipo</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#success">Casos de Éxito</a>
-<a class="font-display text-sm font-medium hover:text-primary transition-colors" href="#testimonials">Testimonios</a>
+<a class="font-display text-base md:text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#about">Sobre Mí</a>
+<a class="font-display text-base md:text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#services">Servicios</a>
+<a class="font-display text-base md:text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#team">Nuestro Equipo</a>
+<a class="font-display text-base md:text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#success">Casos de Éxito</a>
+<a class="font-display text-base md:text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#testimonials">Testimonios</a>
 </nav>
 <div class="hidden md:block">
-<a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-primary text-white font-display text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors" href="#contact">
+<a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-5 bg-accent text-white font-display text-sm font-bold leading-normal tracking-wide hover:bg-accent/90 transition-colors" href="#contact">
 <span class="truncate">Agendar Consulta</span>
 </a>
 </div>
             <!-- Mobile menu toggle -->
             <div class="md:hidden">
-                <button id="mobile-menu-button" aria-expanded="false" aria-controls="mobile-menu" class="inline-flex items-center justify-center p-2 rounded-md text-text-primary hover:bg-background-light/60 focus:outline-none focus:ring-2 focus:ring-primary">
+                <button id="mobile-menu-button" aria-expanded="false" aria-controls="mobile-menu" class="inline-flex items-center justify-center p-2 rounded-md text-accent hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-accent">
                                     <span class="sr-only">Abrir menú principal</span>
                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -334,15 +392,15 @@
 </div>
 </div>
     <!-- Mobile menu (hidden by default) -->
-    <div id="mobile-menu" class="md:hidden hidden absolute left-0 right-0 top-full bg-background-light dark:bg-background-dark/95 shadow-lg z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div id="mobile-menu" class="md:hidden hidden absolute left-0 right-0 top-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 glass-bevel rounded-xl shadow-lg overflow-hidden">
             <nav class="flex flex-col gap-4">
-                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#about">Sobre Mí</a>
-                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#services">Servicios</a>
-                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#team">Nuestro Equipo</a>
-                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#success">Casos de Éxito</a>
-                <a class="font-display text-base font-medium hover:text-primary transition-colors" href="#testimonials">Testimonios</a>
-                <a class="inline-flex items-center justify-center rounded-lg bg-primary text-white px-4 py-2 mt-2 w-max" href="#contact">Agendar Consulta</a>
+                <a class="font-display text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#about">Sobre Mí</a>
+                <a class="font-display text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#services">Servicios</a>
+                <a class="font-display text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#team">Nuestro Equipo</a>
+                <a class="font-display text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#success">Casos de Éxito</a>
+                <a class="font-display text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#testimonials">Testimonios</a>
+                <a class="inline-flex items-center justify-center rounded-lg bg-accent text-white px-4 py-2 mt-2 w-max" href="#contact">Agendar Consulta</a>
             </nav>
         </div>
     </div>
