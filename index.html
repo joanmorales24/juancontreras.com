@@ -468,6 +468,79 @@
     </div>
 </div>
 </section>
+<!-- Marcas: responsive carousel (moved below hero) - title removed to show only logos -->
+<section class="py-12 sm:py-16 bg-white" id="marcas">
+    <div class="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+        <!-- Swiper container -->
+        <div class="swiper marcas-swiper">
+            <div class="swiper-wrapper items-center">
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/1.webp" data-src="/images/marcas/1.webp" alt="marca-1" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/2.webp" data-src="/images/marcas/2.webp" alt="marca-2" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/3.webp" data-src="/images/marcas/3.webp" alt="marca-3" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/4.webp" data-src="/images/marcas/4.webp" alt="marca-4" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/5.webp" data-src="/images/marcas/5.webp" alt="marca-5" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/6.webp" data-src="/images/marcas/6.webp" alt="marca-6" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/7.webp" data-src="/images/marcas/7.webp" alt="marca-7" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/8.webp" data-src="/images/marcas/8.webp" alt="marca-8" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/9.webp" data-src="/images/marcas/9.webp" alt="marca-9" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/10.webp" data-src="/images/marcas/10.webp" alt="marca-10" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/11.webp" data-src="/images/marcas/11.webp" alt="marca-11" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+            </div>
+            <!-- Pagination only (no arrows) -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <style>
+        /* Marcas carousel styles (moved) */
+        #marcas { background-color: #ffffff !important; }
+        .marcas-slide { max-height: 110px; width: auto; display: block; }
+        @media (max-width: 639px) {
+            .marcas-slide { max-height: 130px; }
+            .marcas-slide img { width: 92%; max-width: 92%; height: auto; }
+            .marcas-swiper { padding-left: 6px; padding-right: 6px; }
+            .marcas-swiper .swiper-pagination { display: none !important; }
+        }
+        @media (min-width: 640px) { .marcas-slide { max-height: 120px; } }
+        @media (min-width: 768px) { .marcas-slide { max-height: 140px; } }
+        @media (min-width: 1280px) { .marcas-slide { max-height: 180px; } }
+        .marcas-swiper .swiper-slide { display:flex; align-items:center; justify-content:center; }
+    </style>
+</section>
+
 <section class="py-0 sm:py-0 relative overflow-visible" id="metrics">
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0">
             <div class="absolute left-1/2 -translate-x-1/2 -top-40 h-[48rem] w-[48rem] bg-accent/30 blur-3xl rounded-full opacity-90"></div>
