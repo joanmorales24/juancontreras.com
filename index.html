@@ -438,7 +438,7 @@
             <div class="absolute -bottom-40 -left-20 h-[32rem] w-[32rem] bg-primary/20 blur-3xl rounded-full opacity-90"></div>
         </div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row gap-10 items-center">
+            <div class="flex flex-col md:flex-row gap-1 md:gap-10 items-center">
                 <div class="mb-10 md:mb-0 w-full md:w-[35%] flex-shrink-0">
                     <h2 class="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary dark:text-background-light metrics-title mt-12 md:mt-0 mb-3">¿Qué podemos hacer por tu concesionario?</h2>
                     <h3 class="font-display text-xl text-primary">Métricas</h3>
@@ -534,18 +534,22 @@
                 // Helper to build size classes string
                 function sizeClass(s) { return `${s.w} ${s.h} ${s.mdw} ${s.mdh}`; }
 
+                // Spacing: make adjacent cards sit closer on mobile
+                const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+                const OFFSET_DESKTOP = 120; // px
+                const OFFSET_MOBILE = 70;   // px (tighter overlap on small screens)
+
                 for (let i = 0; i < cards.length; i++) {
                     const isPrev = i === (idx - 1 + cards.length) % cards.length;
                     const isNext = i === (idx + 1) % cards.length;
                     const isActive = i === idx;
 
                     const outer = document.createElement('div');
-                    outer.className = 'absolute left-1/2 -translate-x-1/2 top-1/2 flex items-center justify-center transition-all duration-700';
-                    // calculate offset
+                    outer.className = 'absolute left-1/2 -translate-x-1/2 top-1/2 flex items-center justify-center transition-all duration-500';
+                    // calculate offset (tighter on mobile to reduce empty space)
                     let offset = 0;
-                    // reduced vertical offset so adjacent blurred cards sit much closer to the active card
-                    if (isPrev) offset = -120;
-                    if (isNext) offset = 120;
+                    if (isPrev) offset = -(isDesktop ? OFFSET_DESKTOP : OFFSET_MOBILE);
+                    if (isNext) offset =  (isDesktop ? OFFSET_DESKTOP : OFFSET_MOBILE);
                     outer.style.transform = `translate(-50%,-50%) translateY(${offset}px)`;
 
                     // inner sized container
@@ -609,7 +613,7 @@
                 const end = parseFloat(el.dataset.counter || '0');
                 const prefix = el.dataset.prefix || '';
                 const suffix = el.dataset.suffix || '';
-                const duration = 1200;
+                const duration = 900;
                 const startTime = performance.now();
                 function frame(now){
                     const t = Math.min(1, (now - startTime) / duration);
@@ -634,7 +638,7 @@
             });
 
             // --- Autoplay ---
-            const AUTOPLAY_DELAY = 4000; // ms
+            const AUTOPLAY_DELAY = 2600; // ms
             let autoplayTimer = null;
 
             function startAutoplay() {
@@ -738,6 +742,42 @@
         })();
     </script>
 </section>
+<!-- Casos de Éxito: inline block (no section) placed between metrics and about -->
+<div id="success" class="py-20 sm:py-32 bg-primary/5 dark:bg-primary/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light">Casos de Éxito</h2>
+            <p class="mt-4 font-body text-xl text-text-secondary">Resultados reales para clientes reales.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <img alt="Red sports car" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFT6fNGp6konfFfpCmTpYJxv9M3HyLWhgM7Vbd0h1RvbxPuCGn0PB-Uhp_KhHz92FauMjoDM1BYuPlS230So5LgbH1kUKsttKwfu3XsDgbpr5Z3jgU0dFdfeBRzZdo4yM4aGqUiNOa05o73AA5PjJWzy9RKo7_4lyF6aGxKl_bM8jwLkbPKNcOB4d9Es7jjWL4GX3IbgXxyBjvNOzFZHzRt-8LcV5bFJ5328N2utvkuT-LmAhN3CdqNk5afT1OqvXRApJ7XMsBMJk"/>
+                <div class="p-6">
+                    <p class="text-3xl font-bold text-accent">+35%</p>
+                    <h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Aumento en Cierres de Venta</h3>
+                    <p class="font-body mt-2 text-text-secondary">Concesionario AutoLíder, Chile</p>
+                </div>
+            </div>
+            <div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <img alt="Luxury car showroom" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiuvZtqcrmOHkWrFugF30x0vuuDs1SObyf5bCInKrTOEypJJkK8nqBHeXcirR-z9nK_OhuZcA-m-Ul7aSXfhwJGU0ro7lTgWL3esJu6MC6x1j1oS0HbWMBO6YRblIcHmkv-FiBWKQXP6XvoJuxUH2RCvYDlkljs5bFDrAj6n_8k5s5oCzRFl2RSkjr9ki0O4rGBxn__7JxJ9C8L6jyO46YpyBF5S8018AnrM9gg7y_QkD0mvNDvVQoE2i84lDRLU6PVdyIs1gjBrE"/>
+                <div class="p-6">
+                    <p class="text-3xl font-bold text-accent">+50%</p>
+                    <h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Incremento en Leads Calificados</h3>
+                    <p class="font-body mt-2 text-text-secondary">Grupo Motor, Colombia</p>
+                </div>
+            </div>
+            <div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <img alt="Customer signing papers" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLq09KwVWkF0usdWz5saWoa_GG006aY13eLI8oOrfjWiUKZcdzCLopvHYNAd8uiaJxrF8sfp0SrixQ88vY8S2kxSk5xz_3FqLxMHljQoSefIcZ0YheKehTvkUuvhGE1au5N1cqF-YrejH0De_p3hZiOh8LISbIKY6kUVE1MgObuNaKRtYd8t031eWU8Ar15qm_re3PzA1WOFDSKtE0DsZnt73fL6o_hbij4h32qBLrznJCYXUx_zIYtwS1W9ca6UuIGZWZVMe1Xkk"/>
+                <div class="p-6">
+                    <p class="text-3xl font-bold text-accent">-25%</p>
+                    <h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Reducción del Ciclo de Venta</h3>
+                    <p class="font-body mt-2 text-text-secondary">Automotores del Pacífico, Perú</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <section class="py-20 sm:py-32" id="about">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -784,10 +824,93 @@
 <h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light mb-6">Sobre Mí</h2>
 <p>Soy un emprendedor enfocado en asesorar líderes empresariales mediante estrategias pragmáticas basadas en datos, ayudándolos a optimizar sus procesos y adaptarse de forma ágil a entornos cambiantes. Mi trayectoria abarca el sector automotriz, financiamiento y seguros en canales B2B y B2C, y cuento con formación como Administrador de Empresas (PUCV), Diplomado en Administración en Administración de Empresas de Servicios (UAI), además de certificaciones internacionales en desarrollo de concesionarios y F&I.</p>
 <p>A lo largo de mi carrera he logrado implementar y desarrollar modelos pioneros en Chile y Latam, como el modelo F&I, la fintech AmiCar, el primer modelo de ventas omnicanal y la consultora independiente Sales Consulting. Actualmente me dedico a potenciar a líderes empresariales mediante consultoría comercial enfocada en resultados, diseño de modelos de negocio innovadores, financiamiento, desarrollo de canales y gestión del cambio, colaborando con firmas reconocidas en múltiples sectores.</p>
+
+<div class="mt-6">
+    <a id="about-cta" href="https://calendar.app.google/VJYMz7ta1DrZAKR37" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-lg text-white px-5 py-3 font-display font-medium shadow hover:shadow-md transition" style="background-color:#14b8b3;" onmouseover="this.style.backgroundColor='#0ea3a0'" onmouseout="this.style.backgroundColor='#14b8b3'">Conversemos</a>
+</div>
 </div>
 </div>
 </div>
 </section>
+ 
+<!-- Marcas: responsive carousel using Swiper (moved below Sobre Mí) -->
+<section class="py-12 sm:py-16 bg-white" id="marcas">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 text-center">Marcas con las que trabajamos</h2>
+
+        <!-- Swiper container -->
+        <div class="swiper marcas-swiper">
+            <div class="swiper-wrapper items-center">
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/1.webp" data-src="/images/marcas/1.webp" alt="marca-1" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/2.webp" data-src="/images/marcas/2.webp" alt="marca-2" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/3.webp" data-src="/images/marcas/3.webp" alt="marca-3" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/4.webp" data-src="/images/marcas/4.webp" alt="marca-4" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/5.webp" data-src="/images/marcas/5.webp" alt="marca-5" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/6.webp" data-src="/images/marcas/6.webp" alt="marca-6" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/7.webp" data-src="/images/marcas/7.webp" alt="marca-7" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/8.webp" data-src="/images/marcas/8.webp" alt="marca-8" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/9.webp" data-src="/images/marcas/9.webp" alt="marca-9" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/10.webp" data-src="/images/marcas/10.webp" alt="marca-10" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+                <div class="swiper-slide flex items-center justify-center">
+                    <img src="/images/marcas/11.webp" data-src="/images/marcas/11.webp" alt="marca-11" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
+                </div>
+            </div>
+            <!-- Pagination only (no arrows) -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <style>
+        /* Marcas carousel styles */
+        #marcas { background-color: #ffffff !important; }
+        .marcas-slide { max-height: 110px; width: auto; display: block; }
+        /* On very small screens make the logo fill most of the slide width */
+        @media (max-width: 639px) {
+            .marcas-slide { max-height: 130px; }
+            .marcas-slide img { width: 92%; max-width: 92%; height: auto; }
+            .marcas-swiper { padding-left: 6px; padding-right: 6px; }
+            /* Hide pagination bullets on small screens (mobile) */
+            .marcas-swiper .swiper-pagination { display: none !important; }
+        }
+        @media (min-width: 640px) { .marcas-slide { max-height: 120px; } }
+        @media (min-width: 768px) { .marcas-slide { max-height: 140px; } }
+        @media (min-width: 1280px) { .marcas-slide { max-height: 180px; } }
+        /* ensure swiper slides center content */
+        .marcas-swiper .swiper-slide { display:flex; align-items:center; justify-content:center; }
+    </style>
+</section>
+
 <section class="py-20 sm:py-32 bg-primary/5 dark:bg-primary/10" id="services">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16">
@@ -841,34 +964,7 @@
 </div>
 </div>
 </section>
-<!-- Marcas: sección estática con logos (sin carrusel) -->
-<section class="py-12 sm:py-16 bg-white" id="marcas">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 text-center">Marcas con las que trabajamos</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-items-center marcas-grid">
-            <img src="/images/marcas/1%20(2).webp" alt="marca-1" class="object-contain"/>
-            <img src="/images/marcas/2%20(1).webp" alt="marca-2" class="object-contain"/>
-            <img src="/images/marcas/3%20(1).webp" alt="marca-3" class="object-contain"/>
-            <img src="/images/marcas/4%20(1).webp" alt="marca-4" class="object-contain"/>
-            <img src="/images/marcas/5.webp" alt="marca-5" class="object-contain"/>
-            <img src="/images/marcas/6.webp" alt="marca-6" class="object-contain"/>
-            <img src="/images/marcas/7.webp" alt="marca-7" class="object-contain"/>
-            <img src="/images/marcas/8.webp" alt="marca-8" class="object-contain"/>
-            <img src="/images/marcas/9.webp" alt="marca-9" class="object-contain"/>
-            <img src="/images/marcas/10.webp" alt="marca-10" class="object-contain"/>
-            <img src="/images/marcas/11.webp" alt="marca-11" class="object-contain"/>
-        </div>
-    </div>
-</section>
-
-<style>
-    /* Marcas: larger logos and force pure white background */
-    #marcas { background-color: #ffffff !important; }
-    .marcas-grid img { max-height: 120px; width: auto; }
-    @media (min-width: 768px) { .marcas-grid img { max-height: 160px; } }
-    @media (min-width: 1280px) { .marcas-grid img { max-height: 200px; } }
-</style>
-
+ 
 <section class="py-20 sm:py-32" id="team">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
@@ -924,40 +1020,7 @@
 </div>
 </div>
 </section>
-<section class="py-20 sm:py-32 bg-primary/5 dark:bg-primary/10" id="success">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
-<h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light">Casos de Éxito</h2>
-<p class="mt-4 font-body text-xl text-text-secondary">Resultados reales para clientes reales.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-<div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-<img alt="Red sports car" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFT6fNGp6konfFfpCmTpYJxv9M3HyLWhgM7Vbd0h1RvbxPuCGn0PB-Uhp_KhHz92FauMjoDM1BYuPlS230So5LgbH1kUKsttKwfu3XsDgbpr5Z3jgU0dFdfeBRzZdo4yM4aGqUiNOa05o73AA5PjJWzy9RKo7_4lyF6aGxKl_bM8jwLkbPKNcOB4d9Es7jjWL4GX3IbgXxyBjvNOzFZHzRt-8LcV5bFJ5328N2utvkuT-LmAhN3CdqNk5afT1OqvXRApJ7XMsBMJk"/>
-<div class="p-6">
-<p class="text-3xl font-bold text-accent">+35%</p>
-<h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Aumento en Cierres de Venta</h3>
-<p class="font-body mt-2 text-text-secondary">Concesionario AutoLíder, Chile</p>
-</div>
-</div>
-<div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-<img alt="Luxury car showroom" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiuvZtqcrmOHkWrFugF30x0vuuDs1SObyf5bCInKrTOEypJJkK8nqBHeXcirR-z9nK_OhuZcA-m-Ul7aSXfhwJGU0ro7lTgWL3esJu6MC6x1j1oS0HbWMBO6YRblIcHmkv-FiBWKQXP6XvoJuxUH2RCvYDlkljs5bFDrAj6n_8k5s5oCzRFl2RSkjr9ki0O4rGBxn__7JxJ9C8L6jyO46YpyBF5S8018AnrM9gg7y_QkD0mvNDvVQoE2i84lDRLU6PVdyIs1gjBrE"/>
-<div class="p-6">
-<p class="text-3xl font-bold text-accent">+50%</p>
-<h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Incremento en Leads Calificados</h3>
-<p class="font-body mt-2 text-text-secondary">Grupo Motor, Colombia</p>
-</div>
-</div>
-<div class="bg-background-light dark:bg-background-dark rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-<img alt="Customer signing papers" class="w-full h-56 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLq09KwVWkF0usdWz5saWoa_GG006aY13eLI8oOrfjWiUKZcdzCLopvHYNAd8uiaJxrF8sfp0SrixQ88vY8S2kxSk5xz_3FqLxMHljQoSefIcZ0YheKehTvkUuvhGE1au5N1cqF-YrejH0De_p3hZiOh8LISbIKY6kUVE1MgObuNaKRtYd8t031eWU8Ar15qm_re3PzA1WOFDSKtE0DsZnt73fL6o_hbij4h32qBLrznJCYXUx_zIYtwS1W9ca6UuIGZWZVMe1Xkk"/>
-<div class="p-6">
-<p class="text-3xl font-bold text-accent">-25%</p>
-<h3 class="font-display text-xl font-bold mt-2 text-text-primary dark:text-background-light">Reducción del Ciclo de Venta</h3>
-<p class="font-body mt-2 text-text-secondary">Automotores del Pacífico, Perú</p>
-</div>
-</div>
-</div>
-</div>
-</section>
+ 
 <section class="py-20 sm:py-32" id="testimonials">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16">
@@ -1075,34 +1138,53 @@
                 })();
         </script>
         
-        <script>
-            (function(){
-            try {
-                const swiper = new Swiper('.about-swiper', {
-                    slidesPerView: 1,
-                    centeredSlides: false, // don't center with partial peeks
-                    spaceBetween: 0,       // no gap so only one image is visible
-                    slidesPerGroup: 1,
-                    loop: true,            // loop so autoplay cycles continuously
-                    speed: 600,
-                    autoHeight: true,
-                    watchOverflow: true,
-                    autoplay: {
-                        delay: 4000,
-                        disableOnInteraction: false,
-                        pauseOnMouseEnter: true
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    pagination: { el: '.swiper-pagination', clickable: true },
-                    keyboard: { enabled: true },
-                    lazy: { loadPrevNext: true },
-                });
-            } catch (err) { console.error('Swiper init error', err); }
-        })();
-    </script>
+                <script>
+                    (function(){
+                    try {
+                        const swiper = new Swiper('.about-swiper', {
+                            slidesPerView: 1,
+                            centeredSlides: false, // don't center with partial peeks
+                            spaceBetween: 0,       // no gap so only one image is visible
+                            slidesPerGroup: 1,
+                            loop: true,            // loop so autoplay cycles continuously
+                            speed: 600,
+                            autoHeight: true,
+                            watchOverflow: true,
+                            autoplay: {
+                                delay: 4000,
+                                disableOnInteraction: false,
+                                pauseOnMouseEnter: true
+                            },
+                            navigation: {
+                                nextEl: '.swiper-button-next',
+                                prevEl: '.swiper-button-prev',
+                            },
+                            pagination: { el: '.swiper-pagination', clickable: true },
+                            keyboard: { enabled: true },
+                            lazy: { loadPrevNext: true },
+                        });
+
+                        // Marcas carousel init (no arrows, 1 slide on mobile, faster autoplay)
+                        const marcasSwiper = new Swiper('.marcas-swiper', {
+                            slidesPerView: 1,
+                            spaceBetween: 8,
+                            loop: true,
+                            speed: 350, // faster transition
+                            autoplay: { delay: 1800, disableOnInteraction: false, pauseOnMouseEnter: true },
+                            pagination: { el: '.marcas-swiper .swiper-pagination', clickable: true },
+                            lazy: { loadPrevNext: true, loadOnTransitionStart: true, loadPrevNextAmount: 1 },
+                            breakpoints: {
+                                480: { slidesPerView: 2, spaceBetween: 10 },
+                                640: { slidesPerView: 3, spaceBetween: 12 },
+                                768: { slidesPerView: 4, spaceBetween: 16 },
+                                1024: { slidesPerView: 5, spaceBetween: 20 },
+                                1280: { slidesPerView: 6, spaceBetween: 24 }
+                            }
+                        });
+
+                    } catch (err) { console.error('Swiper init error', err); }
+                })();
+            </script>
 </footer>
 </div>
 </div>
