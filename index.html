@@ -392,12 +392,32 @@
             pointer-events: none;
         }
     </style>
+    <style>
+        /* Mobile split: hero 80vh, marcas 20vh */
+        @media (max-width: 639px) {
+            /* Hero takes 80% of viewport height on small devices */
+            #hero { height: 80vh !important; }
+
+            /* Marcas occupies remaining 20% */
+            #marcas { height: 20vh !important; padding-top: 6px; padding-bottom: 6px; overflow: hidden; }
+
+            /* Ensure Swiper fills the marcas container and centers content vertically */
+            .marcas-swiper, .marcas-swiper .swiper-wrapper { height: 100% !important; display: flex; align-items: center; }
+            .marcas-swiper .swiper-slide { height: 100% !important; display:flex; align-items:center; justify-content:center; }
+
+            /* Make the logo images smaller on mobile so they fit the 20% area comfortably */
+            .marcas-slide { height: calc(15vh - 18px) !important; max-height: none !important; width: auto; border-radius: 16px; object-fit: contain; }
+
+            /* Keep hero content visible and scrollable if necessary */
+            #hero .max-w-7xl { max-height: 80vh; overflow: auto; }
+        }
+    </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-text-primary dark:text-background-light">
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
 <div class="layout-container flex h-full grow flex-col">
-<header class="fixed top-4 left-0 right-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 glass-bevel rounded-xl overflow-hidden">
+    <header class="fixed top-4 left-0 right-0 z-50">
+        <div class="mx-4 sm:mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 glass-bevel rounded-xl overflow-hidden">
         <div class="flex items-center justify-between h-20">
                 <div class="flex items-center gap-4 text-text-primary dark:text-background-light">
                 <a href="/" class="flex items-center gap-3" aria-label="Juan Eduardo Contreras">
@@ -429,7 +449,7 @@
 </div>
     <!-- Mobile menu (hidden by default) -->
     <div id="mobile-menu" class="md:hidden hidden absolute left-0 right-0 top-full z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 glass-bevel rounded-xl shadow-lg overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 glass-bevel rounded-xl shadow-lg overflow-hidden mx-4 sm:mx-auto">
             <nav class="flex flex-col gap-4">
                 <a class="font-display text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#about">Sobre Mí</a>
                 <a class="font-display text-lg font-medium hover:text-primary transition-colors adaptive-contrast" href="#services">Servicios</a>
@@ -442,7 +462,7 @@
     </div>
 </header>
 <main class="flex-1">
-<section class="relative h-screen flex items-center justify-start bg-background-light dark:bg-background-dark overflow-hidden">
+<section id="hero" class="relative h-screen flex items-center justify-start bg-background-light dark:bg-background-dark overflow-hidden">
 <div class="absolute inset-0 z-0">
     <picture>
         <!-- Desktop / tablet -->
@@ -469,7 +489,7 @@
 </div>
 </section>
 <!-- Marcas: responsive carousel (moved below hero) - title removed to show only logos -->
-<section class="py-12 sm:py-16 bg-white" id="marcas">
+<section class="py-12 sm:py-16" id="marcas" aria-label="Marcas con las que hemos trabajado">
     <div class="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
         <!-- Swiper container -->
         <div class="swiper marcas-swiper">
@@ -525,12 +545,18 @@
     </div>
 
     <style>
-        /* Marcas carousel styles (moved) */
-        #marcas { background-color: #ffffff !important; }
-        .marcas-slide { max-height: 110px; width: auto; display: block; }
+    /* Marcas carousel styles (moved) */
+    #marcas { background-color: #ffffff !important; }
+    /* Make logos have rounded corners */
+    .marcas-slide { max-height: 110px; width: auto; display: block; border-radius: 16px; }
+    .marcas-slide { object-fit: contain; }
+    /* Add vertical spacing inside each slide so logos don't touch edges */
+    .marcas-swiper .swiper-slide { padding-top: 12px; padding-bottom: 12px; }
+    .marcas-slide { margin-top: 8px; margin-bottom: 8px; }
         @media (max-width: 639px) {
             .marcas-slide { max-height: 130px; }
-            .marcas-slide img { width: 92%; max-width: 92%; height: auto; }
+            /* Reduce image width on mobile so logos appear smaller */
+            .marcas-slide img { width: 70%; max-width: 70%; height: auto; }
             .marcas-swiper { padding-left: 6px; padding-right: 6px; }
             .marcas-swiper .swiper-pagination { display: none !important; }
         }
@@ -942,83 +968,7 @@
 </div>
 </section>
  
-<!-- Marcas: responsive carousel using Swiper (moved below Sobre Mí) -->
-<section class="py-12 sm:py-16 bg-white" id="marcas">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 text-center">Marcas con las que trabajamos</h2>
-
-        <!-- Swiper container -->
-        <div class="swiper marcas-swiper">
-            <div class="swiper-wrapper items-center">
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/1.webp" data-src="/images/marcas/1.webp" alt="marca-1" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/2.webp" data-src="/images/marcas/2.webp" alt="marca-2" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/3.webp" data-src="/images/marcas/3.webp" alt="marca-3" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/4.webp" data-src="/images/marcas/4.webp" alt="marca-4" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/5.webp" data-src="/images/marcas/5.webp" alt="marca-5" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/6.webp" data-src="/images/marcas/6.webp" alt="marca-6" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/7.webp" data-src="/images/marcas/7.webp" alt="marca-7" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/8.webp" data-src="/images/marcas/8.webp" alt="marca-8" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/9.webp" data-src="/images/marcas/9.webp" alt="marca-9" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/10.webp" data-src="/images/marcas/10.webp" alt="marca-10" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-                <div class="swiper-slide flex items-center justify-center">
-                    <img src="/images/marcas/11.webp" data-src="/images/marcas/11.webp" alt="marca-11" class="marcas-slide object-contain swiper-lazy" loading="lazy" />
-                    <div class="swiper-lazy-preloader"></div>
-                </div>
-            </div>
-            <!-- Pagination only (no arrows) -->
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>
-
-    <style>
-        /* Marcas carousel styles */
-        #marcas { background-color: #ffffff !important; }
-        .marcas-slide { max-height: 110px; width: auto; display: block; }
-        /* On very small screens make the logo fill most of the slide width */
-        @media (max-width: 639px) {
-            .marcas-slide { max-height: 130px; }
-            .marcas-slide img { width: 92%; max-width: 92%; height: auto; }
-            .marcas-swiper { padding-left: 6px; padding-right: 6px; }
-            /* Hide pagination bullets on small screens (mobile) */
-            .marcas-swiper .swiper-pagination { display: none !important; }
-        }
-        @media (min-width: 640px) { .marcas-slide { max-height: 120px; } }
-        @media (min-width: 768px) { .marcas-slide { max-height: 140px; } }
-        @media (min-width: 1280px) { .marcas-slide { max-height: 180px; } }
-        /* ensure swiper slides center content */
-        .marcas-swiper .swiper-slide { display:flex; align-items:center; justify-content:center; }
-    </style>
-</section>
+<!-- Duplicate marcas block removed — single `#marcas` appears directly under the hero to keep layout consistent -->
 
 <section class="py-20 sm:py-32 bg-primary/5 dark:bg-primary/10" id="services">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1282,9 +1232,9 @@
                             lazy: { loadPrevNext: true },
                         });
 
-                        // Marcas carousel init (no arrows, 1 slide on mobile, faster autoplay)
+                        // Marcas carousel init (no arrows, 2 slides on mobile, faster autoplay)
                         const marcasSwiper = new Swiper('.marcas-swiper', {
-                            slidesPerView: 1,
+                            slidesPerView: 2,
                             spaceBetween: 8,
                             loop: true,
                             speed: 350, // faster transition
@@ -1292,7 +1242,6 @@
                             pagination: { el: '.marcas-swiper .swiper-pagination', clickable: true },
                             lazy: { loadPrevNext: true, loadOnTransitionStart: true, loadPrevNextAmount: 1 },
                             breakpoints: {
-                                480: { slidesPerView: 2, spaceBetween: 10 },
                                 640: { slidesPerView: 3, spaceBetween: 12 },
                                 768: { slidesPerView: 4, spaceBetween: 16 },
                                 1024: { slidesPerView: 5, spaceBetween: 20 },
