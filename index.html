@@ -356,6 +356,42 @@
             } catch(e) { /* ignore */ }
         })();
     </script>
+    <style>
+        /* Site-wide subtle blue gradients (non-destructive, mobile-first) */
+        :root{
+            --brand-blue-strong: rgba(3,120,240,0.10);
+            --brand-blue-soft: rgba(3,120,240,0.06);
+        }
+        /* Background layer behind all content */
+        body::before{
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background-image: radial-gradient(circle at 12% 18%, var(--brand-blue-strong), transparent 14%), radial-gradient(circle at 88% 82%, var(--brand-blue-soft), transparent 18%);
+            opacity: 1;
+            transition: opacity .3s ease;
+        }
+        /* Slightly different tint in dark mode so gradients are not too bright */
+        .dark body::before{
+            --brand-blue-strong: rgba(3,120,240,0.12);
+            --brand-blue-soft: rgba(3,120,240,0.08);
+            background-image: radial-gradient(circle at 12% 18%, var(--brand-blue-strong), transparent 16%), radial-gradient(circle at 88% 82%, var(--brand-blue-soft), transparent 22%);
+            opacity: .9;
+        }
+        /* Add a subtle overlay to the glass-bevel panels to hint blue tint without changing existing rules */
+        .glass-bevel{ position: relative; }
+        .glass-bevel::after{
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(180deg, rgba(3,120,240,0.04), rgba(3,120,240,0.02));
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-text-primary dark:text-background-light">
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
@@ -965,6 +1001,15 @@
 </div>
 </section>
  
+<!-- Jumbo CTA (mobile only): entre Servicios y Nuestro Equipo -->
+<section class="md:hidden bg-accent text-white py-16 px-6 sm:px-8 lg:px-8" role="region" aria-label="Jumbo CTA móvil">
+    <div class="max-w-7xl mx-auto text-center">
+        <h3 class="font-display text-2xl md:text-3xl font-extrabold mb-3">Hablemos de tu concesionario</h3>
+        <p class="font-body text-sm mb-6 opacity-90">Agenda una consulta rápida y diseñemos un plan con resultados medibles.</p>
+        <a id="jumbo-mobile-cta" aria-label="Agendar consulta" href="https://calendar.app.google/VJYMz7ta1DrZAKR37" target="_blank" rel="noopener noreferrer" class="inline-flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-8 bg-white text-accent font-display text-lg font-bold leading-normal tracking-wide hover:opacity-95 transition-colors transform-gpu shadow z-30">Agendar ahora</a>
+    </div>
+</section>
+
 <section class="py-20 sm:py-32" id="team">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
