@@ -539,8 +539,7 @@
                     <div class="swiper-lazy-preloader"></div>
                 </div>
             </div>
-            <!-- Pagination only (no arrows) -->
-            <div class="swiper-pagination"></div>
+            <!-- pagination removed: no dots for marcas carousel -->
         </div>
     </div>
 
@@ -553,12 +552,11 @@
     /* Add vertical spacing inside each slide so logos don't touch edges */
     .marcas-swiper .swiper-slide { padding-top: 12px; padding-bottom: 12px; }
     .marcas-slide { margin-top: 8px; margin-bottom: 8px; }
-        @media (max-width: 639px) {
+            @media (max-width: 639px) {
             .marcas-slide { max-height: 130px; }
             /* Reduce image width on mobile so logos appear smaller */
             .marcas-slide img { width: 70%; max-width: 70%; height: auto; }
             .marcas-swiper { padding-left: 6px; padding-right: 6px; }
-            .marcas-swiper .swiper-pagination { display: none !important; }
         }
         @media (min-width: 640px) { .marcas-slide { max-height: 120px; } }
         @media (min-width: 768px) { .marcas-slide { max-height: 140px; } }
@@ -1239,7 +1237,7 @@
                             loop: true,
                             speed: 350, // faster transition
                             autoplay: { delay: 1800, disableOnInteraction: false, pauseOnMouseEnter: true },
-                            pagination: { el: '.marcas-swiper .swiper-pagination', clickable: true },
+                            // pagination intentionally removed: no dots/circles for marcas carousel
                             lazy: { loadPrevNext: true, loadOnTransitionStart: true, loadPrevNextAmount: 1 },
                             breakpoints: {
                                 640: { slidesPerView: 3, spaceBetween: 12 },
