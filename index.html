@@ -201,9 +201,9 @@
             font-size: 3.75rem !important; /* equivalent to text-6xl */
             line-height: 1 !important;
         }
-        /* Ensure mobile top spacing for metrics title if utility classes aren't applied */
+        /* Adjusted: reduce excessive mobile top spacing for metrics title */
         @media (max-width: 767px) {
-            #metrics .metrics-title { margin-top: 6rem; }
+            #metrics .metrics-title { margin-top: 1rem; }
         }
     </style>
     <style>
@@ -489,7 +489,7 @@
 </div>
 </section>
 <!-- Marcas: responsive carousel (moved below hero) - title removed to show only logos -->
-<section class="py-12 sm:py-16" id="marcas" aria-label="Marcas con las que hemos trabajado">
+<section class="py-12 sm:py-16" id="marcas" aria-label="Marcas con las que hemos trabajado" style="background-color: #e5e7eb" >
     <div class="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
         <!-- Swiper container -->
         <div class="swiper marcas-swiper">
@@ -595,14 +595,14 @@
             <div class="absolute -bottom-40 -left-20 h-[32rem] w-[32rem] bg-primary/20 blur-3xl rounded-full opacity-90"></div>
         </div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row gap-1 md:gap-10 items-center">
-                <div class="mb-10 md:mb-0 w-full md:w-[35%] flex-shrink-0">
-                    <h2 class="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary dark:text-background-light metrics-title mt-12 md:mt-0 mb-3">¿Qué podemos hacer por tu concesionario?</h2>
+            <div class="flex flex-col md:flex-row gap-1 md:gap-6 items-center">
+                <div class="mb-4 md:mb-0 w-full md:w-[35%] flex-shrink-0">
+                    <h2 class="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary dark:text-background-light metrics-title mt-2 md:mt-0 mb-3">¿Qué podemos hacer por tu concesionario?</h2>
                     <h3 class="font-display text-xl text-primary">Métricas</h3>
                 </div>
                 <div class="w-full md:w-[65%]">
                     <div class="relative w-full max-w-xl mx-auto" id="metrics-slider-container">
-                        <div id="metrics-slider" class="relative h-[520px] md:h-[920px] flex items-center justify-center">
+                        <div id="metrics-slider" class="relative h-[520px] md:h-[720px] flex items-center justify-center">
                             <button id="metrics-up" type="button" aria-label="Anterior" class="absolute left-1/2 -translate-x-1/2 top-3 md:left-2 md:top-1/2 md:translate-x-0 md:-translate-y-1/2 z-20 bg-background-light/80 dark:bg-background-dark/80 border border-primary/30 rounded-full p-2 w-10 h-10 shadow transition hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary">
                                 <span class="material-symbols-outlined text-2xl">expand_less</span>
                             </button>
@@ -933,6 +933,38 @@
             </div>
         </div>
     </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light mt-10">Testimonios de nuestros clientes.</h2>
+                <p class="mt-4 font-body text-xl text-text-secondary">Historias de éxito de los principales concesionarios de la región.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
+                <p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">“La experiencia de formación entregada por Juan Eduardo fue un punto de inflexión para los equipos de ventas de Ford en regiones. Su capacitación y entrenamiento fueron prácticas, dinámicas y produjo resultados en corto plazo. De hecho, la Tasa de Satisfacción creció en 12 puntos porcentuales en sólo 60 días”.
+                </p>
+                <div>
+                <p class="font-display font-bold text-text-primary dark:text-background-light">Jessica Sáenz</p>
+                <p class="font-body text-sm text-text-secondary">Project Manager, GP Strategies.</p>
+                </div>
+                </div>
+                <div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
+                <p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">“La metodología de Desarrollo de Concesionarios implementada por Juan Eduardo nos permitió adaptar nuestro proceso de ventas y nuestro equipo a la nueva realidad del retail automotriz. Ahora somos más eficientes, la satisfacción de nuestros clientes ha aumentado y nuestro resultado final lo refleja”.
+                </p>
+                <div>
+                <p class="font-display font-bold text-text-primary dark:text-background-light">José Manuel Breiding</p>
+                <p class="font-body text-sm text-text-secondary">Gerente Comercial, DeCar.</p>
+                </div>
+                </div>
+                <div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
+                <p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">“La estrategia de marketing basada en datos implementada por Juan Eduardo y su equipo transformó nuestro proceso de ventas omnicanal. Ahora estamos atrayendo a distintos perfiles de compradores y nuestros leads son de mucho mayor calidad”.
+                </p>
+                <div>
+                <p class="font-display font-bold text-text-primary dark:text-background-light">Juan Pablo Ortiz</p>
+                <p class="font-body text-sm text-text-secondary">Gerente CX, Honda.</p>
+                </div>
+                </div>
+            </div>
+        </div>
 </div>
 
 <section class="py-20 sm:py-32" id="about">
@@ -1026,8 +1058,7 @@
         <div class="mb-4 inline-block text-accent">
             <span class="material-symbols-outlined text-6xl">bar_chart</span>
         </div>
-<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Investigación que potencia ventas:
-</h3>
+<h3 class="font-display text-2xl font-bold mb-2 text-text-primary dark:text-background-light">Investigación que potencia ventas</h3>
 <p class="font-body text-text-secondary">Nuestro estudio sobre oportunidades no cerradas permite a los líderes de los concesionarios detectar brechas y oportunidades en su proceso comercial, revelando las palancas claves que aceleran la conversión, elevan la satisfacción y mejoran la rentabilidad.
 </p>
 </div>
@@ -1108,40 +1139,7 @@
 </div>
 </section>
  
-<section class="py-20 sm:py-32" id="testimonials">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
-<h2 class="font-display text-5xl font-bold tracking-tight text-text-primary dark:text-background-light">Historias de éxito de los líderes de los concesionarios.</h2>
-<p class="mt-4 font-body text-xl text-text-secondary">Historias de éxito de los principales concesionarios de la región.</p>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
-<p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">“La experiencia de formación entregada por Juan Eduardo fue un punto de inflexión para los equipos de ventas de Ford en regiones. Su capacitación y entrenamiento fueron prácticas, dinámicas y produjo resultados en corto plazo. De hecho, la Tasa de Satisfacción creció en 12 puntos porcentuales en sólo 60 días”.
-</p>
-<div>
-<p class="font-display font-bold text-text-primary dark:text-background-light">Jessica Sáenz</p>
-<p class="font-body text-sm text-text-secondary">Project Manager, GP Strategies.</p>
-</div>
-</div>
-<div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
-<p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">“La metodología de Desarrollo de Concesionarios implementada por Juan Eduardo nos permitió adaptar nuestro proceso de ventas y nuestro equipo a la nueva realidad del retail automotriz. Ahora somos más eficientes, la satisfacción de nuestros clientes ha aumentado y nuestro resultado final lo refleja”.
-</p>
-<div>
-<p class="font-display font-bold text-text-primary dark:text-background-light">José Manuel Breiding</p>
-<p class="font-body text-sm text-text-secondary">Gerente Comercial, DeCar.</p>
-</div>
-</div>
-<div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl">
-<p class="font-body text-lg italic text-text-primary/90 dark:text-background-light/90 mb-6">“La estrategia de marketing basada en datos implementada por Juan Eduardo y su equipo transformó nuestro proceso de ventas omnicanal. Ahora estamos atrayendo a distintos perfiles de compradores y nuestros leads son de mucho mayor calidad”.
-</p>
-<div>
-<p class="font-display font-bold text-text-primary dark:text-background-light">Juan Pablo Ortiz</p>
-<p class="font-body text-sm text-text-secondary">Gerente CX, Honda.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
+
 <section class="py-20 sm:py-32 bg-primary/10 dark:bg-primary/20" id="contact">
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 <h2 class="font-display text-5xl sm:text-6xl font-bold tracking-tight text-text-primary dark:text-background-light">¿Listo para acelerar tus ventas?</h2>
@@ -1159,7 +1157,7 @@
 <div class="flex justify-between items-center flex-col md:flex-row gap-8">
 <div class="text-center md:text-left">
 <p class="font-display text-base text-background-light">Juan Eduardo Contreras</p>
-<p class="font-body text-sm text-background-light/70">Consultoría en Ventas Automotrices</p>
+<p class="font-body text-sm text-background-light/70">Especialista en Desarrollo de Concesionarios</p>
 </div>
             <div class="flex space-x-6">
                 <a class="text-background-light/70 hover:text-accent transition-colors" href="https://www.linkedin.com/in/juan-eduardo-contreras-jec/" target="_blank" rel="noopener noreferrer">
