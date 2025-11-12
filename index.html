@@ -16,7 +16,8 @@
 <meta name="twitter:title" content="Consultor Automotriz | Juan Eduardo Contreras (JEC)" />
 <meta name="twitter:description" content="Consultoría automotriz para concesionarios: estrategia, capacitación y optimización de ventas basada en datos en LATAM - JEC" />
 <meta name="twitter:image" content="https://juaneduardocontreras.com/images/opengraph.webp" />
-<link rel="stylesheet" href="styles/main.css"/>
+<!-- cache-bust query param to force clients to fetch updated CSS when we change it -->
+<link rel="stylesheet" href="styles/main.css?v=20251112"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -80,6 +81,13 @@
             });
         });
     </script>
+    <style>
+        /* Force mobile dropdown links to be visible (avoid cached mix-blend or wrong color) */
+        #mobile-menu a { color: #ffffff !important; }
+        #mobile-menu a:hover { color: #049b9b !important; }
+        /* Ensure the mobile CTA inside the menu is also correctly colored */
+        #mobile-menu a.inline-flex { color: #ffffff !important; }
+    </style>
 <style>
         .text-mask {
             -webkit-background-clip: text;
@@ -615,7 +623,7 @@
                     <p class="mt-4 font-body text-base md:text-lg text-text-secondary dark:text-background-light/80 leading-relaxed max-w-xl">Cada concesionario tiene su propio estilo de liderazgo, cultura y ritmo. Pero todos enfrentan el mismo desafío: responder con agilidad a un mercado que cambia minuto a minuto.</p>
                     <p class="mt-4 font-body text-base md:text-lg text-text-secondary dark:text-background-light/80 leading-relaxed max-w-xl">Los datos en tiempo real no son solo cifras: son señales vivas del mercado, comportamientos de clientes, y dinámicas internas que permiten actuar con empatía, rapidez y visión estratégica.</p>
                     <div class="mt-6">
-                        <a class="inline-flex min-w-[84px] max-w-[480px] items-center justify-center rounded-lg h-12 px-5 bg-primary text-white font-display text-base font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors" href="https://calendar.app.google/VJYMz7ta1DrZAKR37" target="_blank" rel="noopener noreferrer">Conversemos</a>
+                        <a id="metrics-cta" aria-label="Agendar ahora" class="inline-flex min-w-[84px] max-w-[480px] items-center justify-center rounded-lg h-12 px-5 bg-primary text-white font-display text-base font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors" href="https://calendar.app.google/VJYMz7ta1DrZAKR37" target="_blank" rel="noopener noreferrer">Agendar ahora</a>
                     </div>
                 </div>
                 <div class="w-full md:w-[65%]">
