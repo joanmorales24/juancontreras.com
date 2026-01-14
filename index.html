@@ -1147,7 +1147,7 @@
         <div class="p-6 bg-background-light dark:bg-background-dark/80 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-2">
             <img alt="Roberto Balocchi" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-md" src="/images/team/Roberto-Balocchi.webp"/>
             <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Roberto Balocchi</h3>
-            <p class="font-body text-primary">Consultor en F&I y Financiamiento Comercial.</p>
+            <p class="font-body text-primary">Consultor en F&I</p>
             <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de F&I. Licenciado en Administración de Empresas (IFE), MBA (IDE), F&I Automotive Senior Trainer (JM&A). Especialista en Financiamiento Comercial con más de 20 años de experiencia en el retail automotriz, F&I y maquinaria industrial.</p>
         </div>
     </div>
@@ -1159,6 +1159,20 @@
             <p class="font-body text-primary">Consultor en Gestión de Concesionarios y Postventa.</p>
             <p class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3">Director de Gestión de Concesionarios y Postventa. Ingeniero Comercial (UDP). Más de 25 años liderando proyectos en empresas nacionales y multinacionales del sector maquinarias, retail y consumo masivo, y 10 años en el retail automotriz liderando operaciones comerciales y de postventa en importadores y concesionarios con demostradas habilidades en el desarrollo e implementación de estrategias de negocios que impulsan crecimiento, rentabilidad y participación de mercado junto con procesos de reorganización empresarial.</p>
         </div>
+    </div>
+
+    <div class="text-center">
+        <div class="p-6 bg-background-light dark:bg-background-dark/80 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-2">
+            <img alt="Pedro Giglio" class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-md" src="/images/team/Rodrigo-Palacios.webp"/>
+            <h3 class="font-display text-xl font-bold text-text-primary dark:text-background-light">Rodrigo Palacios</h3>
+            <p class="font-body text-primary">Consultor en Gestión de Financiamiento Comercial.</p>
+            <div class="font-body text-text-secondary text-left max-w-[28rem] mx-auto mt-3 long-desc">
+                <ul class="list-disc list-inside space-y-1 team-bullets">
+                    <li>Administrador Público, Diplomado en Finanzas y MBA UC.</li>
+                    <li>Especialista Senior en financiamiento comercial automotriz con +30 años de trayectoria en compañías multinacionales, con experiencia en gerencia de ventas, crédito, cobranza, operaciones, riesgo, Analytics y control de gestión.</li>
+                    <li>Combina estrategia y ejecución incluyendo: desarrollo de canales, de productos, optimizar end-to-end (originación–evaluación–desembolso–cobranza) y digitalización de procesos comerciales (evaluación en línea, automatización de decisiones y modelos de score).</li>
+                </ul>
+            </div>
     </div>
 
 </div>
@@ -1216,8 +1230,11 @@
                 if (!cardContainers.length) return;
                 cardContainers.forEach((card, i) => {
                     const paragraphs = Array.from(card.querySelectorAll('p'));
-                    if (paragraphs.length < 2) return; // expect at least role + long desc
-                    const desc = paragraphs[paragraphs.length - 1];
+                    // Prefer an explicit long-desc container (e.g. with UL/LI) and fall back to the last paragraph
+                    const explicitLongDesc = card.querySelector('.long-desc');
+                    const fallbackParagraph = paragraphs.length ? paragraphs[paragraphs.length - 1] : null;
+                    const desc = explicitLongDesc || fallbackParagraph;
+                    if (!desc) return;
                     const id = `team-desc-${i+1}`;
                     desc.id = id;
                     desc.classList.add('team-desc');
@@ -1354,3 +1371,8 @@
     }
     @media (max-width: 420px) { .whatsapp-float { right: 0.6rem; bottom: 0.9rem; width: 50px; height:50px; } }
 </style>
+    <style>
+        /* Asegura que las listas del equipo (como Rodrigo) muestren bullets correctamente */
+        .team-bullets { list-style-type: disc; padding-left: 1.25rem; margin: 0; }
+        .team-bullets li { margin-bottom: 0.25rem; }
+    </style>
