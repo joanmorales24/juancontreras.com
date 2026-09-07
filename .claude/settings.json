@@ -4,7 +4,9 @@
       "Bash(sips --getProperty format \"/Users/joanmorales24/Mis Plugins/juancontreras.com/images/marcas/rodrigo-santibanez.png\")",
       "Bash(sips -s format webp \"/Users/joanmorales24/Mis Plugins/juancontreras.com/images/marcas/rodrigo-santibanez.png\" --out \"/Users/joanmorales24/Mis Plugins/juancontreras.com/images/team/Rodrigo-Santibanez.webp\")",
       "Bash(cwebp -q 82 -resize 400 0 images/marcas/rodrigo-santibanez.png -o images/team/Rodrigo-Santibanez.webp)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(git check-ignore *)",
+      "Bash(curl -s https://juaneduardocontreras.com/)"
     ]
   }
 }
