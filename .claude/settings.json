@@ -6,7 +6,8 @@
       "Bash(cwebp -q 82 -resize 400 0 images/marcas/rodrigo-santibanez.png -o images/team/Rodrigo-Santibanez.webp)",
       "Bash(python3 -c ' *)",
       "Bash(git check-ignore *)",
-      "Bash(curl -s https://juaneduardocontreras.com/)"
+      "Bash(curl -s https://juaneduardocontreras.com/)",
+      "Bash(python3 -c \"import xml.dom.minidom,sys; xml.dom.minidom.parse\\('sitemap.xml'\\); print\\('sitemap XML OK'\\)\")"
     ]
   }
 }

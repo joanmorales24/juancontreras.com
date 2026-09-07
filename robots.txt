@@ -1,0 +1,14 @@
+# robots.txt — https://juaneduardocontreras.com
+
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+# Bots de IA / scrapers (opcional: quita el bloque si quieres permitirlos)
+User-agent: GPTBot
+Disallow:
+
+User-agent: CCBot
+Disallow:
+
+Sitemap: https://juaneduardocontreras.com/sitemap.xml
