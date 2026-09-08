@@ -7,7 +7,8 @@
       "Bash(python3 -c ' *)",
       "Bash(git check-ignore *)",
       "Bash(curl -s https://juaneduardocontreras.com/)",
-      "Bash(python3 -c \"import xml.dom.minidom,sys; xml.dom.minidom.parse\\('sitemap.xml'\\); print\\('sitemap XML OK'\\)\")"
+      "Bash(python3 -c \"import xml.dom.minidom,sys; xml.dom.minidom.parse\\('sitemap.xml'\\); print\\('sitemap XML OK'\\)\")",
+      "Bash(python3 -c \"import re,json; s=open\\('index.html'\\).read\\(\\); json.loads\\(re.search\\(r'ld\\\\+json\\\\\">\\(.*?\\)</script>',s,re.S\\).group\\(1\\)\\); print\\('JSON-LD OK'\\)\")"
     ]
   }
 }
